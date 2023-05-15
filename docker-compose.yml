@@ -1,0 +1,76 @@
+version: '2.2'
+#phien ban cua docker-compose
+services:
+  #define cac container o day
+  app:
+    #webserver container
+    build:
+      context: ./
+      dockerfile: docker/php/Dockerfile
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    privileged: true
+    working_dir: /var/www/html/my-app
+    volumes:
+      - ./my-app/:/var/www/html/my-app #Map (anh xa) thu muc goc cua may thuc vao thu muc html cua containe
+      - ./docker/php/conf.d/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    networks:
+      - app-network
+  node: 
+    image: node:16-alpine
+    container_name: node
+    restart: unless-stopped
+    tty: true
+    privileged: true
+    working_dir: /var/www/html/my-app
+    volumes:
+      - ./my-app/:/var/www/html/my-app #Map (anh xa) thu muc goc cua may thuc vao thu muc html cua containe
+    networks:
+      - app-network
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 8083:80
+    volumes:
+      - ./my-app/:/var/www/html/my-app
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+  supervisor:
+    build:
+      context: ./
+      dockerfile: docker/supervisor/Dockerfile
+    container_name: supervisor
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./my-app/:/var/www/html/my-app/
+      - ./docker/supervisor/queue.ini:/etc/supervisor.d/queue.ini
+    networks:
+      - app-network
+  db:
+    #ccontainer db
+    image: mysql:8.0 #image mysql:8.0
+    container_name: db
+    volumes:
+      #anh xa thu muc .data/db voi tho muc /var/lib/mysql cua container
+      - "./docker/db:/var/lib/mysql"
+    restart: always
+    environment:
+      #thiet lqp thong tin de ket noi voi db
+      MYSQL_ROOT_PASSWORD: password # password cua super user
+      MYSQL_DATABASE: laravel #name db
+      MYSQL_USER: laravel #name user
+      MYSQL_PASSWORD: password #password cua user
+    ports:
+      - "3307:3306" #port cua container
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
