@@ -1,7 +1,7 @@
 FROM php:8.0-fpm
 
 ENV SOURCE_ROOT /var/www/html/my-app
-RUN mkdir -p ${SOURCE_ROOT} && groupadd -g 1000 nginx && useradd -g 1000 -u 1000 -d ${SOURCE_ROOT} -s /bin/bash nginx
+# RUN mkdir -p ${SOURCE_ROOT} && groupadd -g 1000 nginx && useradd -g 1000 -u 1000 -d ${SOURCE_ROOT} -s /bin/bash nginx
 
 # Set working directory
 WORKDIR /var/www/html/my-app/
@@ -47,12 +47,13 @@ RUN crontab -l | { cat; echo "* * * * * cd /var/www/html/my-app && php artisan s
 COPY ./my-app /var/www/html/my-app
 
 # Assign permissions of the working directory to the www-data user
-RUN chown -R nginx:nginx \
-        /var/www/html/my-app/
+RUN chown -R www-data:www-data \
+        /var/www/html/my-app/storage \
+        /var/www/html/my-app/bootstrap/cache
 
-# RUN chmod -R 777 \
-#         /var/www/html/my-app/storage \
-#         /var/www/html/my-app/bootstrap/cache
+RUN chmod -R 777 \
+        /var/www/html/my-app/storage \
+        /var/www/html/my-app/bootstrap/cache
 
 # Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
 EXPOSE 9000
