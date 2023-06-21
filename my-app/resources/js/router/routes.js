@@ -22,6 +22,14 @@ const routes = [
             title: "Dashboard",
           },
         },
+        {
+          path: '/courses',
+          name: 'Course',
+          component: () => import('@/views/course/CourseList.vue'),
+          meta: {
+            title: "Dashboard",
+          },
+        },
       ],
     },
     {

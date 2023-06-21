@@ -30,6 +30,7 @@ import {
   faX,
   faUserMinus,
   faUserPlus,
+  faBook,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -61,4 +62,5 @@ library.add(
   faX,
   faUserMinus,
   faUserPlus,
+  faBook,
 );

@@ -510,6 +510,7 @@ export default {
         "sidebar": {
           "dashboard": "Dashboard",
           "devices": "Thiết bị",
+          "courses" : "Khóa học",
           "requests": "Yêu cầu",
           "handovers": "Bàn giao",
           "users": "Người dùng",

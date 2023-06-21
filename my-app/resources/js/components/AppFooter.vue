@@ -1,6 +1,6 @@
 <template>
   <CFooter>
-    <div class="mx-auto">Copyright &copy; {{ currentYear }} CO-WELL Asia</div>
+    <!-- <div class="mx-auto">Copyright &copy; {{ currentYear }} CO-WELL Asia</div> -->
   </CFooter>
 </template>
 
