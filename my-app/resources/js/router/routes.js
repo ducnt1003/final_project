@@ -25,11 +25,50 @@ const routes = [
         {
           path: '/courses',
           name: 'Course',
-          component: () => import('@/views/course/CourseList.vue'),
-          meta: {
-            title: "Dashboard",
+          component: {
+            render() {
+              return h(resolveComponent('router-view'))
+            },
           },
+          meta: {
+            title: "Khóa học",
+          },
+          redirect: { name: 'CourseCategory'},
+          children:[
+            {
+                path: '',
+                name: 'CourseCategory',
+                component: () => import('../views/course/CategoryList.vue'),
+                meta: {
+                  title: t('devices.category.title')
+                }
+            },
+            {
+              path: ':categoryId',
+              name: 'CourseList',
+              component: () => import('../views/course/CourseList.vue'),
+              meta: {
+                title: 'Khóa học',
+              }
+            },
+          ]
         },
+        {
+            path:'/users',
+            name: 'User',
+            component: () => import('@/views/user/UserList.vue'),
+            meta: {
+                title: 'Người dùng'
+            }
+        },
+        {
+            path:'/similar',
+            name: 'Similar',
+            component: () => import('@/views/similar/SimilarList.vue'),
+            meta: {
+                title: 'Khóa học tương tự'
+            }
+        }
       ],
     },
     {

@@ -29,7 +29,7 @@ import VueViewer from 'v-viewer'
 import 'viewerjs/dist/viewer.min.css'
 // import Loading from "@/components/Common/Loading.vue"
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import "@/assets/icons";
+import "@/assets/icons"
 
 const app = createApp(App)
 app.use(store)

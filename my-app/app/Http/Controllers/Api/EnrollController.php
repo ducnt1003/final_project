@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\Enroll;
 use App\Models\User;
 use App\Services\EnrollService;
+use Illuminate\Support\Facades\Log;
 
 class EnrollController extends Controller
 {
@@ -18,6 +19,7 @@ class EnrollController extends Controller
     public function __construct(EnrollService $enrollService)
     {
         $this->service = $enrollService;
+        ini_set('max_execution_time', 300);
     }
 
     /**
@@ -129,11 +131,14 @@ class EnrollController extends Controller
             $enroll_matrix_csv .= $students[$student_id].",".implode(",", $row)."\n";
         }
         $filePath = public_path("recommend/enroll_matrix.csv");
-        $this->saveCSV($filePath, $enroll_matrix_csv);
+        Log::info($enroll_matrix_csv);
+        // $this->saveCSV($filePath, $enroll_matrix_csv);
 
         # ----------------------------------------------------------------- #
         # Save csv course similar matrix by enrollment data
         $similarE_matrix_csv = "course,".implode(",", array_values($courses))."\n";
+        $similarArray = [];
+        $courseSimilar = [];
         foreach (array_keys($courses) as $c_i) {
             $row = array();
             foreach (array_keys($courses) as $c_j) {
@@ -143,11 +148,14 @@ class EnrollController extends Controller
                     $row[$c_j] = 1;
                 else $row[$c_j] = $this->calCosineSimilar($c_i_vector, $c_j_vector);
             }
+            $similarArray[] = $row;
+            $courseSimilar[] = $courses[$c_i];
             $similarE_matrix_csv .= $courses[$c_i].",".implode(",", $row)."\n";
         }
-
+        return $similarArray;
         $filePath = public_path("recommend/similarE_matrix.csv");
-        $this->saveCSV($filePath, $similarE_matrix_csv);
+        return ['courses' => $courses, 'similar' => $similarArray];
+        // $this->saveCSV($filePath, $similarE_matrix_csv);
 
         return $this->response();
     }
