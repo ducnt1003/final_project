@@ -24,7 +24,6 @@ import AppHeader from "@/components/AppHeader.vue";
 import AppSidebar from "@/components/AppSidebar.vue";
 import BackButton from "@/components/Common/BackButton.vue";
 // import store from "@/store";
-import { getAccessToken, getAuthen2fa } from '@/utils/cookies';
 // import { mapActions, mapGetters } from 'vuex';
 
 

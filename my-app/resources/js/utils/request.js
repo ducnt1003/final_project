@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { useToast } from 'vue-toastification'
-import { getAccessToken, removeAccessToken, removeSelectedDevices, removeAuthen2fa } from '@/utils/cookies'
+import { getAccessToken, removeAccessToken } from '@/utils/cookies'
 import Router from '@/router'
 import i18n from '@/i18n/i18n'
 
@@ -28,9 +28,9 @@ service.interceptors.request.use(
     (config) => {
       // Set JWT token
       const token = getAccessToken()
-      if (token) {
-        config.headers['Authorization'] = 'Bearer ' + token
-      } else Router.push({ name: 'Login' });
+    //   if (token) {
+    //     config.headers['Authorization'] = 'Bearer ' + token
+    //   } else Router.push({ name: 'Login' });
 
       return config
     },
@@ -59,10 +59,8 @@ service.interceptors.response.use(
         // when token expired - 401
         case StatusCodes.UNAUTHORIZED:
           removeAccessToken({ path: "/" });
-          removeSelectedDevices();
-          removeAuthen2fa();
           Router.push({ name: 'Login' });
-          
+
           break;
         // when not allowed - 403
         case StatusCodes.FORBIDDEN:

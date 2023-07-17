@@ -1,7 +1,7 @@
 <template>
     <ContentCard>
         <template #title>
-          Danh sách khóa học
+          Danh sách danh mục
         </template>
 
         <div
@@ -12,11 +12,12 @@
               @click="
               () =>
                 $router.push({
-                  name: 'CourseCreate',
+                  name: 'CategoryCreate',
+                  params: { categoryId },
                 })
             "
           >
-            Khóa học mới
+            Danh mục mới
           </CButton>
         </div>
 
@@ -79,27 +80,17 @@ export default {
     ...mapActions(['showDialog']),
     setColumns() {
       this.columns = [
-        { data: 'code', title: 'Mã lớp', sortable: true },
+        { data: 'code', title: 'Mã danh mục', sortable: true },
         {
           data: 'name',
-          title: 'Tên môn',
+          title: 'Tên danh mục',
           sortable: true,
         },
         {
-          data: 'teacher',
-          title: 'Giảng viên',
+          data: 'creater',
+          title: 'Người tạo',
           sortable: true,
-        },
-        {
-          data: 'parts',
-          title: 'Số buổi',
-          sortable: true,
-        },
-        {
-          data: 'num_of_student',
-          title: 'Số học sinh',
-          sortable: true,
-        },
+        }
       ]
     },
     setFilters() {
@@ -107,17 +98,17 @@ export default {
         {
           data: 'code',
           type: 'CFormInput',
-          label: 'Mã lớp',
+          label: 'Mã danh mục',
         },
         {
           data: 'name',
           type: 'CFormInput',
-          label: 'Tên môn',
+          label: 'Tên Danh mục',
         },
         {
-          data: 'teacher',
+          data: 'creater',
           type: 'CFormInput',
-          label: 'Giảng viên',
+          label: 'Người tạo',
         },
         // {
         //   data: 'parts',
@@ -233,7 +224,7 @@ export default {
               id: 1,
               code: 'CO-001',
               name: 'Thiết kế giao diện người dùng',
-              teacher: 'Nguyễn Văn A',
+              creater: 'Nguyễn Văn A',
               parts: 13,
               num_of_student: 50,
             },
@@ -241,7 +232,7 @@ export default {
               id: 2,
               code: 'CO-002',
               name: 'Kiểm thử và đảm bảo chất lượng phần mềm',
-              teacher: 'Nguyễn Văn A',
+              creater: 'Nguyễn Văn A',
               parts: 13,
               num_of_student: 50,
             },
@@ -249,7 +240,7 @@ export default {
               id: 3,
               code: 'CO-003',
               name: 'Kiến trúc phần mềm',
-              teacher: 'Nguyễn Văn A',
+              creater: 'Nguyễn Văn A',
               parts: 13,
               num_of_student: 50,
             },
@@ -257,7 +248,7 @@ export default {
               id: 4,
               code: 'CO-004',
               name: 'Phân tích và thiết kế hướng đối tượng',
-              teacher: 'Nguyễn Văn A',
+              creater: 'Nguyễn Văn A',
               parts: 13,
               num_of_student: 50,
             },
@@ -319,7 +310,7 @@ export default {
     this.$watch(
       () => this.$route.query,
       async () => {
-        if (this.$route.name === 'CourseList') {
+        if (this.$route.name === 'CategoryList') {
           this.setQueries()
           await this.handleGetData()
         }

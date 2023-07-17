@@ -64,8 +64,8 @@ export default {
           "confirmMessage": "Xác nhận toàn bộ thông tin ?",
           "confirmDeleteRoleAdmin": "Xác nhận bỏ quyền Admin của ",
           "confirmAddRoleAdmin": "Xác nhận cung cấp quyền Admin cho ",
-          "newMessage": "New", 
-          "editMessage": "Edit", 
+          "newMessage": "New",
+          "editMessage": "Edit",
           "searchDevice": "Tìm kiếm thiết bị ",
         },
         "home": {
@@ -498,19 +498,20 @@ export default {
                 "unit": "Bộ phận",
                 "change_status": "Trạng thái tài sản kiểm kê",
                 "total_change": "Số tài sản thay đổi"
-            },            
+            },
             "detail": {
                 "title": "Báo cáo kiểm kê",
                 "userInfo": "Thông tin người nhập",
                 "assetNumbers": "Số tài sản",
                 "assetStatus": "Trạng thái tài sản"
-            }   
+            }
           }
         },
         "sidebar": {
           "dashboard": "Dashboard",
           "devices": "Thiết bị",
           "courses" : "Khóa học",
+          "categories" : "Danh mục",
           "requests": "Yêu cầu",
           "handovers": "Bàn giao",
           "users": "Người dùng",
@@ -546,7 +547,7 @@ export default {
             "maxWord": "Nhập tối đa 30 chữ cái trong một từ",
             "maxStringInstall": "Nhập tối đa 35 kí tự",
             "maxStringNote": "Nhập tối đa 1000 kí tự",
-            'requiredRequest': "Cần nhập lý do từ chối", 
+            'requiredRequest': "Cần nhập lý do từ chối",
           },
           "username": {
             "required": "Tên đăng nhập đang bỏ trống."
@@ -579,7 +580,7 @@ export default {
             "request": "Yêu cầu",
             "tranfer": "Bàn giao",
             "report": "Báo cáo kiểm kê",
-            "incident": "Báo cáo hỏng", 
+            "incident": "Báo cáo hỏng",
           }
         },
         "errors": {

@@ -28,6 +28,10 @@
               {{ option.name }}
             </option>
           </template>
+          <template v-if="type === 'CFormType'">
+            <input type="file"
+            @change="handleChange($event)"/>
+          </template>
         </Field>
       </slot>
     </CCol>
@@ -151,6 +155,25 @@ export default {
         this.attributes['max'] = this.max
       }
     },
+    handleChange(e) {
+      // Check if file is selected
+        if (e.target.files && e.target.files[0]) {
+            // Get uploaded file
+            const file = e.target.files[0]
+            // Get file size
+            // Get file name
+            // Check if file is an image
+            // Print to console
+            const fileSize = Math.round((file.size / 1024 / 1024) * 100) / 100;
+            // Get file extension
+            const fileExtention = file.name.split(".").pop();
+            // Get file name
+            const fileName = file.name.split(".").shift();
+            console.log(file.name);
+            let reader = new FileReader();
+        }
+        
+    }
   },
   created() {
     this.addAttribute()

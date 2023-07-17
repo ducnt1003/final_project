@@ -10,6 +10,12 @@ export default [
   },
   {
     component: 'CNavGroup',
+    name: t('sidebar.categories'),
+    to: '/categories',
+    icon: 'fa-solid fa-book',
+  },
+  {
+    component: 'CNavGroup',
     name: t('sidebar.courses'),
     to: '/courses',
     icon: 'fa-solid fa-book',

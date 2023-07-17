@@ -29,9 +29,9 @@
 <script>
 import { useStore } from "vuex";
 // import { logout } from "@/services/auth";
-import { removeAccessToken, removeSelectedDevices } from "@/utils/cookies";
+import { removeAccessToken } from "@/utils/cookies";
 import { mapActions } from "vuex";
-import { removeAuthen2fa } from "../utils/cookies";
+
 
 export default {
   name: "AppHeaderDropdownAccnt",

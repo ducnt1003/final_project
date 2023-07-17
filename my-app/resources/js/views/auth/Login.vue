@@ -74,7 +74,7 @@
 import { Form, Field } from 'vee-validate';
 import * as yup from 'yup';
 // import { login } from '@/services/auth';
-import { setAccessToken, getAccessToken, getAuthen2fa, setAuthen2fa } from '@/utils/cookies';
+import { setAccessToken, getAccessToken } from '@/utils/cookies';
 import logoSquare from '@/assets/images/logo-square.jpg';
 import { mapActions } from 'vuex';
 
