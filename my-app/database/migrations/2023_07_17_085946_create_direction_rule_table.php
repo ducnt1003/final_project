@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('course_tag', function (Blueprint $table) {
+        Schema::create('direction_rule', function (Blueprint $table) {
             $table->id();
-            $table->integer('tag_id');
-            $table->integer('course_id');
+            $table->integer('direction_id');
+            $table->integer('category_id');
+            $table->integer('level');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_tag');
+        Schema::dropIfExists('direction_rule');
     }
 };

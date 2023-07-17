@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\EnrollController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,5 +35,13 @@ Route::prefix('course')->group(function () {
     // Route::get('/{id}', [CourseController::class, 'getDetail']);
     Route::post('/create', [CourseController::class, 'store']);
     Route::delete('/delete/{id}', [CourseController::class, 'destroy']);
+});
+
+Route::prefix('enroll')->group(function () {
+    Route::get('/dump_csv', [EnrollController::class, 'dump_csv']);
+    // Route::post('/edit/{id}', [CourseController::class, 'update']);
+    // // Route::get('/{id}', [CourseController::class, 'getDetail']);
+    // Route::post('/create', [CourseController::class, 'store']);
+    // Route::delete('/delete/{id}', [CourseController::class, 'destroy']);
 });
 

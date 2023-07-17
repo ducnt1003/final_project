@@ -14,4 +14,10 @@ class CourseRepository extends AbstractRepository
     {
         return Course::class;
     }
+
+    public function getList($search) {
+        // if (!is_null($search))
+            // return $this->model->where('name', 'LIKE', "%$search%")->get();
+        return $this->model->get();
+    }
 }

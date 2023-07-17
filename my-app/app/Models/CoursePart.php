@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tag extends Model
+class CoursePart extends Model
 {
     use HasFactory;
+    protected $table = 'course_parts';
 
     protected $fillable = [
         'id',
-        'name',
+        'course_id',
+        'part',
         'description',
-        'created'
     ];
 
     public $timestamps = true;
-    
 }

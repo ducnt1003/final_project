@@ -4,38 +4,19 @@ namespace App\Services;
 
 use App\Models\Course;
 use App\Models\Enroll;
+use App\Models\Student;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class EnrollService extends BaseService
 {
+    CONST k = 3;
     /**
      * @param BranchRepository $branchRepository
      */
     public function __construct()
     {
-    }
-
-
-    public function recommend($student)
-    {
-        $splited = $this->splitEnrolled($student);
-        $enrolled = $splited['enrolled'];
-        $non_enrolled = $splited['non_enrolled'];
-
-        $scores = $this->calScore($enrolled, $non_enrolled);
-
-        $scores['top_courses'] = Course::whereIn('courses.id', array_keys($scores['top_scores']))
-            ->join('teachers', 'courses.teacher_id', '=', 'teachers.id')
-            ->join('users', 'teachers.user_id', '=', 'users.id')
-            ->leftJoin('enrolls', 'courses.id', '=', 'enrolls.course_id')
-            ->groupby('courses.id')
-            ->select([ 'courses.id', 'courses.name', 'courses.overview', 'courses.level', 'courses.thumbnail',
-                'courses.rate', 'courses.teacher_id', 'courses.price', DB::raw('count(*) as enrolls'),
-                'users.name as teacher_name',
-            ])
-            ->get();
-        return $scores;
     }
 
     /**
@@ -55,57 +36,105 @@ class EnrollService extends BaseService
         ];
     }
 
-    /**
-     * Apply collaborative algorithm to get top score course_id
-     */
-    public function calScore($enrolled, $non_enrolled)
+    public function dumpCSV()
     {
-        $sim_csv_path = public_path("recommend/similar_matrix.csv");
-        $file = fopen($sim_csv_path, 'r');
-        $row = fgetcsv($file, 0, ',');
+        $students = Student::join('users', 'students.user_id', '=', 'users.id')
+            ->pluck("users.name", "students.id")
+            ->toArray();  // array(["id" =>"name"])
+        $courses = Course::pluck("name", "id")->toArray();
+        $enrolls = Enroll::select('student_id', 'course_id')->get();
+        Log::info($enrolls);
+        # ----------------------------------------------------------------- #
+        # Save csv enrollment data
+        // $enroll_matrix_csv = "student,".implode(",", array_values($courses))."\n";
+        $courses_vector = array();
 
-        $index_2_id = Course::pluck("id")->toArray();
-        $id_2_index = array_flip($index_2_id);
+        foreach (array_keys($students) as $student_id) {
+            # Assign row[enrolled items] to 1
+            $row = array(); // vector users (1, 0, ...)
+            foreach (array_keys($courses) as $course_id) {
+                $enroll = $enrolls->where(['student_id' => $student_id, 'course_id' => $course_id,]);
+                $row[$course_id] = $enroll ? 1 : 0;
+            }
+            Log::info(2);
 
-        $traces = [];
-        $scores = array_fill_keys(array_keys($non_enrolled), 0);
-        foreach ($non_enrolled as $c_i => $str_i) {
-            # Find until get vector $c_i
-            while ($row[0] != $str_i) {
-                $row = fgetcsv($file, 0, ',');
-            }
+            # Normalize by magnitude
+            // $magnitude = sqrt(array_sum($row));
+            // $row = array_map(function ($element) use ($magnitude) {
+            //     if ($magnitude == 0)
+            //         return 0;
+            //     return $element / $magnitude;
+            // }, $row);
 
-            $similar = array_fill_keys(array_keys($enrolled), 0);
-            # Find maximun similar btw c_i vs each c_j of all enroleld course
-            foreach (array_keys($enrolled) as $c_j) {
-                $similar[$c_j] = $row[$id_2_index[$c_j] + 1];
-            }
-            arsort($similar);    # sort by value similar
-            $courses_trace = [];
-            foreach($similar as $key => $value) {
-                $course_name = Course::where('id', $key)->first()->name;
-                $courses_trace[$course_name] = $value;
-            }
-            // $traces[$c_i] = array_slice($courses_trace, 0, 3);
-            $traces[$c_i] = $courses_trace;
-            $scores[$c_i] = array_sum(array_slice($similar, 0, 3));
+            # Save vector to calculate similar
+            array_push($courses_vector, $row);
+            // $enroll_matrix_csv .= $students[$student_id].",".implode(",", $row)."\n";
         }
-        arsort($scores);
-        // dd($scores);
-        if (sizeof($scores) >= 3)
-            $top_scores = array_slice($scores, 0, 3, true);
-        else {
-            $top_scores = $scores;
+        Log::info($courses_vector);
+        // $filePath = public_path("recommend/enroll_matrix.csv");
+        // $this->saveCSV($filePath, $enroll_matrix_csv);
+
+        # ----------------------------------------------------------------- #
+        # Save csv course similar matrix by enrollment data
+        // $similarE_matrix_csv = "course,".implode(",", array_values($courses))."\n";
+        // foreach (array_keys($courses) as $c_i) {
+        //     $row = array();
+        //     foreach (array_keys($courses) as $c_j) {
+        //         $c_i_vector = array_column($courses_vector, $c_i);
+        //         $c_j_vector = array_column($courses_vector, $c_j);
+        //         if ($c_i == $c_j)
+        //             $row[$c_j] = 1;
+        //         else $row[$c_j] = $this->calCosineSimilar($c_i_vector, $c_j_vector);
+        //     }
+        //     $similarE_matrix_csv .= $courses[$c_i].",".implode(",", $row)."\n";
+        // }
+
+        // $filePath = public_path("recommend/similarE_matrix.csv");
+        // $this->saveCSV($filePath, $similarE_matrix_csv);
+
+        return 1;
+        // return $this->response();
+    }
+
+    /**
+     * Calculate CosineSimilar from 2 vector u, v
+     */
+    public function calCosineSimilar($u, $v)
+    {
+        $dot_product = array_sum(array_map( function ($u_i, $v_i) {
+            return $u_i * $v_i;
+        }, $u, $v));
+
+        $u_val = sqrt(
+            array_sum(array_map( function ($u_i, $u_I) {
+                return $u_i * $u_I;
+            }, $u, $u))
+        );
+
+        $v_val = sqrt(
+            array_sum(array_map( function ($v_i, $v_I) {
+                return $v_i * $v_I;
+            }, $v, $v))
+        );
+
+        if($u_val == 0 || $v_val == 0)
+            return 0;
+
+        return $dot_product / ($u_val * $v_val);
+    }
+
+    /**
+     *
+     */
+    public function saveCSV($filePath, $csv)
+    {
+        if (file_exists($filePath)) {
+            unlink($filePath);
         }
 
-        $traces = array_filter($traces, function ($key) use ($top_scores) {
-            return in_array($key, array_keys($top_scores));
-        }, ARRAY_FILTER_USE_KEY);
-
-        return [
-            'top_scores' => $top_scores,
-            'traces' => $traces
-        ];
+        $fp = fopen($filePath, "w+");
+        fwrite($fp, $csv);
+        fclose($fp);
     }
 
 }
