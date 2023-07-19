@@ -17,9 +17,6 @@ return new class extends Migration
             $table->id();
             $table->integer('student_id');
             $table->integer('course_id');
-            $table->integer('is_subcribe')->default(0);
-            $table->integer('is_seen')->default(0);
-            $table->integer('is_favo')->default(0);
             $table->timestamps();
         });
     }

@@ -1,12 +1,18 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <RouterView />
+  <div>
+    <router-view/>
+  </div>
 </template>
 
-<style scoped>
+<script >
+import Footer from "@/components/Footer.vue";
+import Header from "@/components/Header.vue";
 
-</style>
+export default {
+  components: {
+    Footer,
+    Header,
+  },
+};
+</script>
+

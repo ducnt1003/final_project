@@ -12,7 +12,7 @@ export default [
     component: 'CNavGroup',
     name: t('sidebar.categories'),
     to: '/categories',
-    icon: 'fa-solid fa-book',
+    icon: 'fa-solid fa-archive',
   },
   {
     component: 'CNavGroup',

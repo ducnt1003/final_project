@@ -39,4 +39,9 @@ class Course extends Model
      {
          return $this->hasMany('App\Models\Enroll', 'course_id', 'id');
      }
+
+     public function parts()
+     {
+        return $this->hasMany(CoursePart::class, 'course_id');
+     }
 }

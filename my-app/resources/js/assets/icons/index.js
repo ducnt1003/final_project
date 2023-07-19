@@ -34,6 +34,7 @@ import {
   faChalkboardUser,
   faUsersViewfinder,
   faBookReader,
+  faArchive,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -69,4 +70,5 @@ library.add(
   faChalkboardUser,
   faUsersViewfinder,
   faBookReader,
+  faArchive,
 );

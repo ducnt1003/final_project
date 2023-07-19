@@ -25,6 +25,7 @@
                 label="Danh mục"
                 :selectOptions="categoryOptions"
                 :error="errors.category"
+                :value="data?.category_id"
                 required
             />
 
@@ -34,6 +35,7 @@
                 label="Độ khó"
                 :selectOptions="levelOptions"
                 :error="errors.level"
+                :value="data?.level"
                 required
             />
 
@@ -179,8 +181,9 @@ import { useRoute } from "vue-router";
 import { ref } from "@vue/reactivity";
 import * as yup from "yup";
 import { getCategories } from "@/services/category";
-import { createCourse } from "@/services/course";
+import { createCourse, getCourseDetail } from "@/services/course";
 import * as levels from "@/configs/course/level";
+import { useToast } from "vue-toastification";
 
 export default {
     components: {
@@ -191,19 +194,28 @@ export default {
     setup() {
         const courseId = useRoute().params.courseId;
         const categoryOptions = ref([]);
-        // const levelOptions = levels;
+        const levelOptions = Object.values(levels)
+            .sort((a, b) => a.id - b.id)
+            .map((level) => ({
+                name: level.name,
+                value: level.id,
+            }));
         const isLoading = ref(false);
         const isSubmiting = ref(false);
         const parts = ref([]);
         const data = ref({});
+        const toast = useToast();
+
+
         return {
             courseId,
             categoryOptions,
-            levelOptions: Object.values(levels).sort((a, b) => a.id - b.id),
+            levelOptions,
             isLoading,
             isSubmiting,
             parts,
             data,
+            toast,
         };
     },
     computed: {
@@ -212,6 +224,19 @@ export default {
         },
     },
     methods: {
+        async getCourseInfo() {
+            this.isLoading = true;
+            try {
+                const response = await getCourseDetail(this.courseId);
+                if (response) {
+                    this.data = response.data;
+                    this.parts = this.data.parts
+                    console.log(response)
+                }
+            } finally {
+                this.isLoading = false;
+            }
+        },
         async handleGetData() {
             this.isLoading = true;
             try {
@@ -239,9 +264,20 @@ export default {
                 formData.append("teacher_id", 2);
                 formData.append("description", result.description ?? null);
                 formData.append("photo", result.image ?? null);
-                const response = await createCourse(formData);
-                if (response) {
-                    console.log(response)
+                formData.append("parts", result.parts.map((e) => {
+                    return JSON.stringify(e)
+                }) ?? null);
+
+                if (!this.courseId) {
+                    const response = await createCourse(formData);
+                    if (response) {
+                        console.log(response);
+                        this.toast.success(
+                            'Tạo khóa học mới thành công'
+                        );
+                    }
+                } else {
+
                 }
             } finally {
                 this.isSubmiting = false;
@@ -262,6 +298,9 @@ export default {
     },
     async created() {
         await this.handleGetData();
+        if (this.courseId) {
+            await this.getCourseInfo(this.courseId);
+        }
     },
 };
 </script>

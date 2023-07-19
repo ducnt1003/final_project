@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('course_id');
             $table->integer('part');
             $table->string('name');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

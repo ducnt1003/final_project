@@ -23,15 +23,33 @@ class CourseController extends Controller
         $this->courseService = $courseService;
     }
 
+    public function list(Request $request): JsonResponse
+    {
+        return $this->courseService->getList($request);
+    }
+
+    public function getDetail($id)
+    {
+        return $this->courseService->getDetail($id);
+    }
+
+
     /**
      * @param Request $request
      * @return mixed
      */
     public function store(Request $request): mixed
     {
-        Log::info(1);
-        dd(1);
         return $this->courseService->create($request);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function uploadDocument($id, Request $request): mixed
+    {
+        return $this->courseService->uploadDocument($id, $request);
     }
 
     /**

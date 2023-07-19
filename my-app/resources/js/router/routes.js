@@ -54,6 +54,15 @@ const routes = [
                             title: "Tạo khóa học",
                         },
                     },
+                    {
+                        path: ":courseId/edit",
+                        name: "CourseEdit",
+                        component: () =>
+                            import("../views/course/CourseForm.vue"),
+                        meta: {
+                            title: "Chỉnh sửa khóa học",
+                        },
+                    },
                 ],
             },
             {
