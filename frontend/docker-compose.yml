@@ -1,0 +1,17 @@
+version: '2.2'
+#phien ban cua docker-compose
+services:
+  #define cac container o day
+  webserver_fe:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fe
+    ports:
+      - 3001:80
+    networks:
+      - app-network
+  
+networks:
+  app-network:
+    driver: bridge
