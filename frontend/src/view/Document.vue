@@ -58,10 +58,10 @@
               :data="selected.path"
               type="application/pdf"
               width="100%"
-              height="500px"
+              height="600px"
             ></object>
 
-            <video v-if="this.selected.type == 'mp4'" width="700" controls>
+            <video v-if="this.selected.type == 'mp4'" width="900" controls>
               <source :src="selected.path" type="video/mp4" />
             </video>
           </div>

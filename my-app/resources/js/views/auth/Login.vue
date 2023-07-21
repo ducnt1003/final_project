@@ -4,9 +4,9 @@
       <CRow class="justify-content-center">
         <CCol xs="12" md="10" lg="8" xl="6">
           <CCard class="p-0 p-sm-4">
-            <div class="d-flex justify-content-center">
+            <!-- <div class="d-flex justify-content-center">
               <img :src="logoSquare" class="img-fluid" style="max-width: 200px" />
-            </div>
+            </div> -->
             <CCardBody>
               <h1 class="text-center">{{ $t('auth.login.title') }}</h1>
               <Form id="login_form"

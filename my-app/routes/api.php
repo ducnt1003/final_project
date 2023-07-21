@@ -40,6 +40,8 @@ Route::prefix('course')->group(function () {
 
 Route::prefix('enroll')->group(function () {
     Route::get('/dump_csv', [EnrollController::class, 'dump_csv']);
+    Route::get('/gen_matrix', [EnrollController::class, 'calculateUserScore']);
+    Route::get('/recomend/{id}', [EnrollController::class, 'recomend']);
     // Route::post('/edit/{id}', [CourseController::class, 'update']);
     // // Route::get('/{id}', [CourseController::class, 'getDetail']);
     // Route::post('/create', [CourseController::class, 'store']);

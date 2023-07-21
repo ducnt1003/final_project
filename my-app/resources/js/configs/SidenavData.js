@@ -34,8 +34,8 @@ export default [
   },
   {
     component: 'CNavGroup',
-    name: 'Khóa học đăng ký',
-    to: '/enroll',
+    name: 'Định hướng',
+    to: '/directions',
     icon: 'fa-solid fa-book-reader',
   },
 ]

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class DirectionRule extends Model
 {
     use HasFactory;
+    protected $table = 'direction_rule';
 }

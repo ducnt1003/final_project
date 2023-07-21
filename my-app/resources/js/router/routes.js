@@ -74,6 +74,40 @@ const routes = [
                 },
             },
             {
+                path: "/directions",
+                name: "Direction",
+                //   component: () => import('../views/course/CourseList.vue'),
+                component: {
+                    render() {
+                        return h(resolveComponent("router-view"));
+                    },
+                },
+                meta: {
+                    title: "Định hướng",
+                },
+                redirect: { name: 'DirectionList'},
+                children: [
+                    {
+                        path: "",
+                        name: "DirectionList",
+                        component: () =>
+                            import("../views/direction/DirectionList.vue"),
+                        meta: {
+                            title: "Danh sách định hướng",
+                        },
+                    },
+                    {
+                        path: "create",
+                        name: "DirectionCreate",
+                        component: () =>
+                            import("../views/direction/DirectionForm.vue"),
+                        meta: {
+                            title: "Tạo định hướng",
+                        },
+                    },
+                ]
+            },
+            {
                 path: "/users",
                 name: "User",
                 component: () => import("@/views/user/UserList.vue"),

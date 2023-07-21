@@ -38,12 +38,12 @@ class EnrollService extends BaseService
 
     public function dumpCSV()
     {
-        $students = Student::join('users', 'students.user_id', '=', 'users.id')
+        $students = Student::join('users', 'students.user_id', '=', 'users.id')->where('students.id','<',500)
             ->pluck("users.name", "students.id")
             ->toArray();  // array(["id" =>"name"])
         $courses = Course::pluck("name", "id")->toArray();
-        $enrolls = Enroll::select('student_id', 'course_id')->get();
-        Log::info($enrolls);
+        $enrolls = Enroll::select('student_id', 'course_id')->where('student_id','<','500')->get();
+        // Log::info($enrolls);
         # ----------------------------------------------------------------- #
         # Save csv enrollment data
         // $enroll_matrix_csv = "student,".implode(",", array_values($courses))."\n";
@@ -56,7 +56,7 @@ class EnrollService extends BaseService
                 $enroll = $enrolls->where(['student_id' => $student_id, 'course_id' => $course_id,]);
                 $row[$course_id] = $enroll ? 1 : 0;
             }
-            Log::info(2);
+            // Log::info(2);
 
             # Normalize by magnitude
             // $magnitude = sqrt(array_sum($row));
