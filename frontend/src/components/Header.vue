@@ -29,7 +29,7 @@
         <div class="navbar-nav ms-auto p-4 p-lg-0">
             <router-link class="nav-item nav-link"
                     :to="{ name: 'Home' }">Trang chủ</router-link>
-          <a href="courses.html" class="nav-item nav-link">Khóa học của tôi</a>
+          <a href="/courses" class="nav-item nav-link">Khóa học của tôi</a>
           <div class="nav-item dropdown">
             <a
               href="#"

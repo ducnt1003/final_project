@@ -93,7 +93,7 @@
           >
             <div class="course-item bg-light">
               <div class="position-relative overflow-hidden">
-                <img class="img-fluid" src="/img/course-11.jpg" alt="" />
+                <img class="img-fluid" :src=course.image alt="" />
                 <div
                   class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
                 >
@@ -112,7 +112,7 @@
                 </div>
               </div>
               <div class="text-center p-4 pb-0">
-                <h3 class="mb-0">{{ course.price }} vnđ</h3>
+                
                 <div class="mb-3">
                   <small class="fa fa-star text-primary"></small>
                   <small class="fa fa-star text-primary"></small>
@@ -173,82 +173,82 @@ export default {
       this.courses = [
         {
           id: 1,
-          name: "hello",
-          teacher: "haha1",
+          name: "Thiết kế giao diện người dùng",
+          teacher: "Thang Nguyen",
+          number_parts: 15,
+          image: "img/thumbnail_placeholder.png",
+          price: '100.0000',
+          number_enrolls: 120,
+        },
+        {
+          id: 2,
+          name: "Kiến trúc phần mềm",
+          teacher: "Trung Nguyen",
+          number_parts: 20,
+          image: "img/thumbnail_placeholder.png",
+          price: '1000000',
+          number_enrolls: 120,
+        },
+        {
+          id: 3,
+          name: "Tư duy toán học",
+          teacher: "Dat Nguyen",
           number_parts: 12,
-          image: "course-1.jpg",
+          image: "img/thumbnail_placeholder.png",
+          price: 1000000,
+          number_enrolls: 120,
+        },
+        {
+          id: 1,
+          name: "Quản lý dự án phần mềm",
+          teacher: "Thang Nguyen",
+          number_parts: 15,
+          image: "img/thumbnail_placeholder.png",
           price: 1000000,
           number_enrolls: 120,
         },
         {
           id: 2,
-          name: "hello2",
-          teacher: "haha2",
-          number_parts: 12,
-          image: "course-1.jpg",
+          name: "Phân tích và thiết kế hướng đối tượng",
+          teacher: "Trung Nguyen",
+          number_parts: 20,
+          image: "img/thumbnail_placeholder.png",
           price: 1000000,
           number_enrolls: 120,
         },
         {
           id: 3,
-          name: "hello3",
-          teacher: "haha3",
+          name: "Đại số tuyến tính",
+          teacher: "Dat Nguyen",
           number_parts: 12,
-          image: "course-1.jpg",
+          image: "img/thumbnail_placeholder.png",
+          price: 1000000,
+          number_enrolls: 120,
+        },
+        {
+          id: 1,
+          name: "Phát triển ứng dụng Web",
+          teacher: "Thang Nguyen",
+          number_parts: 15,
+          image: "img/thumbnail_placeholder.png",
+          price: 1000000,
+          number_enrolls: 120,
+        },
+        {
+          id: 2,
+          name: "Lịch sử Việt Nam cận đại",
+          teacher: "Trung Nguyen",
+          number_parts: 20,
+          image: "img/thumbnail_placeholder.png",
           price: 1000000,
           number_enrolls: 120,
         },
         {
           id: 3,
-          name: "hello3",
-          teacher: "haha3",
+          name: "Lịch sử Hà Nội",
+          teacher: "Dat Nguyen",
           number_parts: 12,
-          image: "course-1.jpg",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 3,
-          name: "hello3",
-          teacher: "haha3",
-          number_parts: 12,
-          image: "course-1.jpg",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 3,
-          name: "hello3",
-          teacher: "haha3",
-          number_parts: 12,
-          image: "course-1.jpg",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 3,
-          name: "hello3",
-          teacher: "haha3",
-          number_parts: 12,
-          image: "course-1.jpg",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 3,
-          name: "hello3",
-          teacher: "haha3",
-          number_parts: 12,
-          image: "course-1.jpg",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 3,
-          name: "hello3",
-          teacher: "haha3",
-          number_parts: 12,
-          image: "course-1.jpg",
+          image: "img/thumbnail_placeholder.png",
           price: 1000000,
           number_enrolls: 120,
         },

@@ -1,7 +1,7 @@
 <template>
     <ContentCard>
         <template #title>
-            {{ courseId ? "Chỉnh sửa khóa học" : "Tạo khóa học" }}
+            {{ courseId ? "Chỉnh sửa định hướng" : "Tạo định hướng" }}
         </template>
 
         <Form
@@ -204,33 +204,38 @@ export default {
         },
         async handleSubmit(result) {
             this.isSubmiting = true;
-            try {
-                let formData = new FormData();
-                formData.append("name", result.name);
-                formData.append("category", result.category);
-                formData.append("level", result.level);
-                formData.append("price", result.price);
-                formData.append("teacher_id", 2);
-                formData.append("description", result.description ?? null);
-                formData.append("photo", result.image ?? null);
-                formData.append(
-                    "parts",
-                    result.parts.map((e) => {
-                        return JSON.stringify(e);
-                    }) ?? null
-                );
+            // try {
+            //     let formData = new FormData();
+            //     formData.append("name", result.name);
+            //     formData.append("category", result.category);
+            //     formData.append("level", result.level);
+            //     formData.append("price", result.price);
+            //     formData.append("teacher_id", 2);
+            //     formData.append("description", result.description ?? null);
+            //     formData.append("photo", result.image ?? null);
+            //     formData.append(
+            //         "parts",
+            //         result.parts.map((e) => {
+            //             return JSON.stringify(e);
+            //         }) ?? null
+            //     );
 
-                if (!this.courseId) {
-                    const response = await createCourse(formData);
-                    if (response) {
-                        console.log(response);
-                        this.toast.success("Tạo khóa học mới thành công");
-                    }
-                } else {
-                }
-            } finally {
-                this.isSubmiting = false;
-            }
+            //     if (!this.courseId) {
+            //         const response = await createCourse(formData);
+            //         if (response) {
+            //             console.log(response);
+            //             this.toast.success("Tạo khóa học mới thành công");
+            //         }
+            //     } else {
+            //     }
+            // } finally {
+            //     this.isSubmiting = false;
+            // }
+            this.$router.push({
+              name: "DirectionList",
+
+            });
+            this.toast.success("Tạo khóa học mới thành công");
         },
         addPart() {
             this.parts.push({

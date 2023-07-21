@@ -6,35 +6,17 @@
         <div class="position-relative">
           <img class="img-fluid" width="100%" src="/img/bg-ab.jpg" alt="" />
           <div
-            class="
-              position-absolute
-              top-0
-              start-0
-              w-100
-              h-100
-              d-flex
-              align-items-center
-            "
+            class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
             style="background: rgba(24, 29, 56, 0.7)"
           >
             <div class="container">
               <div class="row justify-content-start">
                 <div class="col-sm-10 col-lg-8">
                   <h5
-                    class="
-                      text-primary text-uppercase
-                      mb-3
-                      animated
-                      slideInDown
-                    "
+                    class="text-primary text-uppercase mb-3 animated slideInDown"
                   ></h5>
                   <h1
-                    class="
-                      display-3
-                      text-white text-uppercase
-                      animated
-                      slideInDown
-                    "
+                    class="display-3 text-white text-uppercase animated slideInDown"
                   >
                     Học viện online
                   </h1>
@@ -58,96 +40,17 @@
                 </h1>
               </div>
 
-              <iframe
-                width="100%"
-                height="315"
-                src="https://www.youtube.com/embed/orAs3a6wq4Y"
-              >
-              </iframe>
-              <h3><strong>Bạn c&oacute; biết:</strong></h3>
+              <img
+                class="img-fluid rounded w-100 mb-4"
+                src="/img/thumbnail_placeholder.png"
+                alt="Image"
+              />
 
               <p>
-                Doanh số b&aacute;n h&agrave;ng lu&ocirc;n l&agrave; mục
-                ti&ecirc;u h&agrave;ng đầu của bất kỳ c&aacute; nh&acirc;n,
-                doanh nghiệp kinh doanh bởi n&oacute; quyết định tới sự tồn tại
-                v&agrave; ph&aacute;t triển của ch&iacute;nh c&aacute;
-                nh&acirc;n, doanh nghiệp đ&oacute;.
+                {{ course.description }}
               </p>
-
               <p>
-                Tuy nhi&ecirc;n, l&agrave;m c&aacute;ch n&agrave;o để gia tăng
-                doanh số b&aacute;n h&agrave;ng lại l&agrave; một c&acirc;u hỏi
-                kh&oacute;, thường trực đối với c&aacute;c nh&agrave; kinh
-                doanh.
-              </p>
-
-              <p>
-                Ở ngo&agrave;i kia, đ&atilde; c&oacute; kh&ocirc;ng &iacute;t
-                người học kinh doanh, doanh nghiệp th&agrave;nh c&ocirc;ng trong
-                kinh doanh, tăng tỉ lệ chốt Sales, b&aacute;n h&agrave;ng, gia
-                tăng doanh số, thu lợi nhuận cao. Hẳn l&agrave; họ nắm trong tay
-                những b&iacute; quyết ri&ecirc;ng!
-              </p>
-              <h3>
-                <strong>B&iacute; quyết gia tăng doanh số l&agrave;?</strong>
-              </h3>
-
-              <p>
-                C&acirc;u trả lời đặt ra đ&oacute; l&agrave; b&iacute; quyết
-                l&agrave; g&igrave;? Kh&oacute;a học &ldquo;<strong
-                  >30 Tuyệt chi&ecirc;u gia tăng doanh số ngay lập tức</strong
-                >&rdquo; Của Diễn giả - Luật sư Phạm Th&agrave;nh Long sẽ chia
-                sẻ tới bạn 30 tuyệt chi&ecirc;u, b&iacute; quyết để gi&uacute;p
-                bạn gia tăng doanh số b&aacute;n h&agrave;ng nhanh ch&oacute;ng.
-                30 tuyệt chi&ecirc;u rất đơn giản, nhưng mang lại hiệu quả
-                v&agrave; bạn c&oacute; thể dễ thực hiện.
-              </p>
-
-              <p>
-                Cụ thể, kh&oacute;a học n&agrave;y bao gồm &nbsp;34 b&agrave;i
-                giảng, được chia l&agrave;m 5 phần học rất cụ thể, lộ
-                tr&igrave;nh b&agrave;i giảng chi tiết từ cơ bản đến n&acirc;ng
-                cao.
-              </p>
-
-              <p>- &nbsp;Phần 1: Tổng quan</p>
-
-              <p>
-                - &nbsp;Phần 2: Thu h&uacute;t kh&aacute;ch h&agrave;ng tiềm
-                năng:&nbsp;Bạn sẽ được chia sẻ c&aacute;c c&aacute;ch để thu
-                h&uacute;t kh&aacute;ch h&agrave;ng tiềm năng mua sản phẩm của
-                m&igrave;nh như c&aacute;ch tặng qu&agrave; miễn ph&iacute;,
-                chiến lược bể c&aacute;, chiến lược đuổi tiền của bạn, chiến
-                lược tạo landing page.
-              </p>
-
-              <p>
-                - &nbsp;Phần 3: Tăng tỉ lệ chốt sales:&nbsp;Bạn n&ecirc;n
-                c&aacute;c chiến lược tăng tỉ đặt cuộc hẹn, biết c&aacute;ch
-                x&acirc;y dựng th&acirc;n t&igrave;nh, chuyển t&iacute;nh năng
-                th&agrave;nh lợi &iacute;ch, x&aacute;c định USP, sử dụng
-                c&acirc;u chuyện để tăng tỷ lệ b&aacute;n h&agrave;ng.
-              </p>
-
-              <p>
-                - &nbsp;Phần 4: B&iacute; quyết tăng doanh số tr&ecirc;n mỗi đơn
-                h&agrave;ng
-              </p>
-
-              <p>- Phần 5: Chiến lược x&acirc;y dựng Fan cuồng</p>
-
-              <p>
-                Trong thời buổi kinh tế thị trường, cạnh tranh cao như hiện nay,
-                nếu bạn c&ograve;n chần chừ, do dự th&igrave; ắt hẳn phần thắng
-                sẽ rơi v&agrave;o tay kẻ kh&aacute;c. Ch&iacute;nh bởi vậy
-                m&agrave; ngay b&acirc;y giờ bạn cần phải học chiến lược kinh
-                doanh&nbsp;để nắm trọn t&igrave;nh h&igrave;nh thị trường trong
-                tay.&nbsp;Nhanh tay đăng k&yacute; ngay kh&oacute;a học
-                &ldquo;<strong
-                  >30 Tuyệt chi&ecirc;u gia tăng doanh số ngay lập tức</strong
-                >&rdquo; để c&ugrave;ng nhau kh&aacute;m ph&aacute; v&agrave;
-                th&agrave;nh c&ocirc;ng.<br />
-                &nbsp;
+                {{ course.description }}
               </p>
             </div>
 
@@ -156,54 +59,33 @@
                 <h2 class="mb-3">Nội dung khóa học</h2>
               </div>
               <div class="card-body">
-                <div class="accordion" id="accordionPanelsStayOpenExample">
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                      <button
-                        class="accordion-button"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseOne"
-                        aria-expanded="true"
-                        aria-controls="panelsStayOpen-collapseOne"
-                      >
-                        Phần 1: Tổng quan
-                      </button>
-                    </h2>
-                    <div
-                      id="panelsStayOpen-collapseOne"
-                      class="accordion-collapse collapse show"
-                      aria-labelledby="panelsStayOpen-headingOne"
+                <CAccordion style="margin-top: 20px" :active-item-key="0">
+                  <div>
+                    <CAccordionItem
+                      v-for="(part, part_index) in parts"
+                      :item-key="part_index"
                     >
-                      <div class="accordion-body">
-                        <div class="row">
-                          <div class="col-xs-7 col-md-8">
-                            <i class="fa fa-play"></i> Bài 1: Mindset
-                          </div>
-                          <div class="col-xs-2 col-md-2">
-                            <a href="">Học thử</a>
-                          </div>
-                          <video width="320" height="240" controls src="/storage/video/Stephen Sanchez - Until I Found You.mp4"
-                            type="video/mp4"> video from video folder.
-                          </video>
-                          <div class="col-xs-3 col-md-2">6:23</div>
-                        </div>
-                      </div>
-                    </div>
+                      <CAccordionHeader>
+                        <strong>Buổi {{ part_index + 1  }}:{{ part.name }}</strong>
+                      </CAccordionHeader>
+                      <CAccordionBody>
+                        <CListGroup>
+                          <CListGroup
+                            flush
+                            v-for="(document, index) in part.documents"
+                          >
+                            <CListGroupItem component="button"
+                              ><strong>{{
+                                document.name
+                              }}</strong></CListGroupItem
+                            >
+                          </CListGroup>
+                        </CListGroup>
+                      </CAccordionBody>
+                    </CAccordionItem>
                   </div>
-                </div>
+                </CAccordion>
               </div>
-            </div>
-            <div class="container py-2">
-              <span>Tags:</span>&nbsp;
-              <a class="badge bg-secondary">Chiến lược kinh doanh</a>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="mb-3">Thông tin giảng viên</h3>
-              </div>
-              <div class="card-body"></div>
             </div>
           </div>
 
@@ -212,7 +94,7 @@
               <h3 class="text-white py-3 px-4 m-0">Thông tin khóa học</h3>
               <div class="d-flex justify-content-between border-bottom px-4">
                 <h6 class="text-white my-3">Giảng viên</h6>
-                <h6 class="text-white my-3">Phạm Thành Long</h6>
+                <h6 class="text-white my-3">{{ course.teacher }}</h6>
               </div>
               <div class="d-flex justify-content-between border-bottom px-4">
                 <h6 class="text-white my-3">Đánh giá</h6>
@@ -220,7 +102,7 @@
               </div>
               <div class="d-flex justify-content-between border-bottom px-4">
                 <h6 class="text-white my-3">Bài giảng</h6>
-                <h6 class="text-white my-3">35</h6>
+                <h6 class="text-white my-3">{{ course.number_parts }}</h6>
               </div>
               <div class="d-flex justify-content-between border-bottom px-4">
                 <h6 class="text-white my-3">Thời lượng</h6>
@@ -230,9 +112,15 @@
                 <h6 class="text-white my-3">Ngôn ngữ</h6>
                 <h6 class="text-white my-3">Tiếng Việt</h6>
               </div>
-              <h5 class="text-white py-3 px-4 m-0">Giá: 500.000vnđ</h5>
+              <div class="d-flex justify-content-between px-4">
+                <h6 class="text-white my-3">Số người học</h6>
+                <h6 class="text-white my-3">{{ course.number_enrolls }}</h6>
+              </div>
+
               <div class="py-3 px-4">
-                <a class="btn btn-block btn-secondary py-3 px-5" href="/course-document"
+                <a
+                  class="btn btn-block btn-secondary py-3 px-5"
+                  href="/course-document"
                   >Đăng ký</a
                 >
               </div>
@@ -241,89 +129,21 @@
             <div class="mb-5">
               <h2 class="mb-4">Khóa học tương tự</h2>
               <a
+                v-for="course in recomend"
                 class="d-flex align-items-center text-decoration-none mb-4"
                 href=""
               >
                 <div class="pl-3">
-                  <img
-                    class="img-fluid rounded"
-                    src="/img/course-re-1.jpg"
-                    alt=""
-                  />
-                  <h5>Xây dựng hệ thống kinh doanh cho Boss</h5>
+                  <img class="img-fluid rounded" :src="course.image" alt="" />
+                  <h5>{{ course.name }}</h5>
                   <div class="d-flex">
                     <small class="text-body mr-3"
-                      ><i class="fa fa-user text-primary mr-2"></i>Phạm Thành Long</small
+                      ><i class="fa fa-user text-primary mr-2"></i
+                      >{{ course.teacher }}</small
                     >
                     <small class="text-body"
                       ><i class="fa fa-star text-primary mr-2"></i>4.5
                       (450)</small
-                    >
-                  </div>
-                </div>
-              </a>
-              <a
-                class="d-flex align-items-center text-decoration-none mb-4"
-                href=""
-              >
-                <div class="pl-3">
-                  <img
-                    class="img-fluid rounded"
-                    src="/img/course-re-2.jpg"
-                    alt=""
-                  />
-                  <h5>Nghệ thuật bán hàng giá cao</h5>
-                  <div class="d-flex">
-                    <small class="text-body mr-3"
-                      ><i class="fa fa-user text-primary mr-2"></i>Phạm Thành Long</small
-                    >
-                    <small class="text-body"
-                      ><i class="fa fa-star text-primary mr-2"></i>4.7
-                      (750)</small
-                    >
-                  </div>
-                </div>
-              </a>
-              <a
-                class="d-flex align-items-center text-decoration-none mb-4"
-                href=""
-              >
-                <div class="pl-3">
-                  <img
-                    class="img-fluid rounded"
-                    src="/img/course-re-3.jpg"
-                    alt=""
-                  />
-                  <h5>Tuyệt chiêu đàm phán</h5>
-                  <div class="d-flex">
-                    <small class="text-body mr-3"
-                      ><i class="fa fa-user text-primary mr-2"></i>Phạm Thành Long</small
-                    >
-                    <small class="text-body"
-                      ><i class="fa fa-star text-primary mr-2"></i>4.5
-                      (100)</small
-                    >
-                  </div>
-                </div>
-              </a>
-              <a
-                class="d-flex align-items-center text-decoration-none mb-4"
-                href=""
-              >
-                <div class="pl-3">
-                  <img
-                    class="img-fluid rounded"
-                    src="/img/course-re-4.jpg"
-                    alt=""
-                  />
-                  <h5>Kinh doanh đột phá</h5>
-                  <div class="d-flex">
-                    <small class="text-body mr-3"
-                      ><i class="fa fa-user text-primary mr-2"></i>Phạm Thành Long</small
-                    >
-                    <small class="text-body"
-                      ><i class="fa fa-star text-primary mr-2"></i>4.7
-                      (150)</small
                     >
                   </div>
                 </div>
@@ -337,18 +157,100 @@
   </div>
 </template>
 <script>
-import { ref } from '@vue/reactivity'
+import { ref } from "@vue/reactivity";
 export default {
-  setup(){
-    const courses = ref([])
+  setup() {
+    const course = ref({});
+    const recomend = ref([]);
+    const parts = ref([]);
     return {
-        courses,
-    }
+      course,
+      recomend,
+      parts,
+    };
   },
   methods: {
-    
-  
+    async getData() {
+      (this.course = {
+        id: 1,
+        name: "Thiết kế giao diện người dùng",
+        teacher: "Thang Nguyen",
+        number_parts: 15,
+        image: "img/thumbnail_placeholder.png",
+        price: 1000000,
+        number_enrolls: 120,
+        description:
+          "Đa số người dùng  đánh giá chất lượng của 1 hệ thống thông qua giao diện hơn là thông qua chức năng. Giao diện không tốt là nguyên nhân dẫn người dùng đến lỗi. Thiết kế giao diện người dùng không tốt là nguyên nhân dẫn đến nhiều phần mềm không được sử dụng. Cùng Kteam tìm hiểu chi tiết về Thiết kế giao diện người dùng nào",
+      }),
+        (this.recomend = [
+          {
+            id: 1,
+            name: "Thiết kế giao diện người dùng",
+            teacher: "Thang Nguyen",
+            number_parts: 15,
+            image: "/img/thumbnail_placeholder.png",
+            price: 1000000,
+            number_enrolls: 120,
+          },
+          {
+            id: 2,
+            name: "Kiến trúc phần mềm",
+            teacher: "Trung Nguyen",
+            number_parts: 20,
+            image: "/img/thumbnail_placeholder.png",
+            price: 1000000,
+            number_enrolls: 120,
+          },
+          {
+            id: 3,
+            name: "Tư duy toán học",
+            teacher: "Dat Nguyen",
+            number_parts: 12,
+            image: "/img/thumbnail_placeholder.png",
+            price: 1000000,
+            number_enrolls: 120,
+          },
+        ]);
+      this.parts = [
+        {
+          name: "Tổng quan",
+          documents: [
+            {
+              id: 1,
+              type: "mp4",
+              path: "/intro.mp4",
+              name: "Mở đầu",
+            },
+            {
+              id: 2,
+              type: "pdf",
+              path: "/ui-ux1.pdf",
+              name: "Giới thiệu",
+            },
+          ],
+        },
+        {
+          name: "Bài học đầu",
+          documents: [
+            {
+              id: 3,
+              type: "mp4",
+              path: "/intro.mp4",
+              name: "Lý thuyết",
+            },
+            {
+              id: 4,
+              type: "pdf",
+              path: "/ui-ux1.pdf",
+              name: "Bài tập",
+            },
+          ],
+        }
+      ];
+    },
   },
-}
-
+  async created() {
+    await this.getData();
+  },
+};
 </script>

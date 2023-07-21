@@ -6,13 +6,12 @@
           <CCard>
             <CCardHeader
               ><CCardTitle
-                >Thiết kế giao diện người dùng</CCardTitle
+                >{{ course.name }}</CCardTitle
               ></CCardHeader
             >
             <CCardBody>
               <CCardText
-                >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                enim nulla.</CCardText
+                >{{course.description}}</CCardText
               >
             </CCardBody>
           </CCard>
@@ -80,9 +79,11 @@ export default {
   setup() {
     const parts = ref([]);
     const selected = ref({});
+    const course = ref({});
     return {
       parts,
       selected,
+      course,
     };
   },
   methods: {
@@ -91,9 +92,20 @@ export default {
       this.selected = documents[index];
     },
     async getData() {
+      this.course ={
+        id: 1,
+        name: "Thiết kế giao diện người dùng",
+        teacher: "Thang Nguyen",
+        number_parts: 15,
+        image: "img/thumbnail_placeholder.png",
+        price: 1000000,
+        number_enrolls: 120,
+        description:
+          "Đa số người dùng  đánh giá chất lượng của 1 hệ thống thông qua giao diện hơn là thông qua chức năng. Giao diện không tốt là nguyên nhân dẫn người dùng đến lỗi. Thiết kế giao diện người dùng không tốt là nguyên nhân dẫn đến nhiều phần mềm không được sử dụng.",
+      },
       this.parts = [
         {
-          name: "bai1",
+          name: "Tổng quan",
           documents: [
             {
               id: 1,
@@ -110,7 +122,7 @@ export default {
           ],
         },
         {
-          name: "bai2",
+          name: "Bài học đầu",
           documents: [
             {
               id: 3,
