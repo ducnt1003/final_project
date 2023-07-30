@@ -28,7 +28,7 @@ export default [
   },
   {
     component: 'CNavGroup',
-    name: 'Khóa học tương tự',
+    name: 'Khóa học gợi ý',
     to: '/similar',
     icon: 'fa-solid fa-chalkboard-user',
   },

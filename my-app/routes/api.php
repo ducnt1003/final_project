@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\DirectionController;
 use App\Http\Controllers\Api\EnrollController;
+use App\Http\Controllers\Api\RecomendController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +24,14 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    // Route::post('/logout', [AuthController::class, 'logout']);
+    // Route::post('/refresh', [AuthController::class, 'refresh']);
+    // Route::post('/me', [AuthController::class, 'me']);
+});
 
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'list']);
@@ -46,5 +58,34 @@ Route::prefix('enroll')->group(function () {
     // // Route::get('/{id}', [CourseController::class, 'getDetail']);
     // Route::post('/create', [CourseController::class, 'store']);
     // Route::delete('/delete/{id}', [CourseController::class, 'destroy']);
+});
+
+Route::prefix('user')->group(function () {
+    Route::get('/search-student', [UserController::class, 'searchStudent']);
+
+    // Route::post('/edit/{id}', [CourseController::class, 'update']);
+    // // Route::get('/{id}', [CourseController::class, 'getDetail']);
+    // Route::post('/create', [CourseController::class, 'store']);
+    // Route::delete('/delete/{id}', [CourseController::class, 'destroy']);
+});
+
+Route::prefix('recomend')->group(function () {
+    Route::get('/get-data', [RecomendController::class, 'getData']);
+    Route::get('/{id}', [RecomendController::class, 'recomend']);
+
+
+
+    // Route::post('/edit/{id}', [CourseController::class, 'update']);
+    // // Route::get('/{id}', [CourseController::class, 'getDetail']);
+    // Route::post('/create', [CourseController::class, 'store']);
+    // Route::delete('/delete/{id}', [CourseController::class, 'destroy']);
+});
+
+Route::prefix('direction')->group(function () {
+    Route::get('/', [DirectionController::class, 'list']);
+    // Route::post('/edit/{id}', [CategoryController::class, 'update']);
+    // // Route::get('/{id}', [CategoryController::class, 'getDetail']);
+    // Route::post('/create', [CategoryController::class, 'store']);
+    // Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
 });
 
