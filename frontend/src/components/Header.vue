@@ -43,29 +43,33 @@
               <a href="404.html" class="dropdown-item">Kĩ năng mềm</a>
             </div>
           </div>
-          <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
+          <a href="/" class="nav-item nav-link">Liên hệ</a>
         </div>
-        <a href="/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block"
-          >{{ hello }}<i class="fa fa-arrow-right ms-3"></i
+        <a v-if="!token" href="/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block"
+          >Đăng nhập<i class="fa fa-arrow-right ms-3"></i
         ></a>
       </div>
     </nav>
 </template>
 <script>
 import { ref } from '@vue/reactivity'
+import { getAccessToken } from '@/utils/cookies'
 
 export default {
   name: 'Header',
   components: {
   },
   setup() {
-    const hello = localStorage.getItem('email') ? 'Xin chào' : 'Đăng ký ngay'
+    const token = getAccessToken();
     return {
-      hello,
+      token,
     }
   },
   methods:{
 
   },
+  created() {
+    console.log(this.token)
+  }
 }
 </script>

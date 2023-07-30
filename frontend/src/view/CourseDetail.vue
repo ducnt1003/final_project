@@ -36,7 +36,7 @@
             <div class="mb-5">
               <div class="position-relative mb-5">
                 <h1 class="display-4">
-                  30 Tuyệt chiêu gia tăng doanh số ngay lập tức
+                  {{ course.name }}
                 </h1>
               </div>
 

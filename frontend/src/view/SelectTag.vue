@@ -50,8 +50,8 @@
 
     <div class="mt-5 mb-5 row g-6 justify-content-center">
       <div class="col-lg-2 text-center">
-        <a href="/" type="button" class="btn btn-info" style="width: 100%"
-          >Xác nhận</a
+        <button @click="submit" type="button" class="btn btn-info" style="width: 100%"
+          >Xác nhận</button
         >
       </div>
     </div>
@@ -60,50 +60,47 @@
 
 <script>
 import { ref } from "@vue/reactivity";
+import { getDirections } from "../services/direction";
 export default {
   name: "SelectTag",
 
   setup() {
     const data = ref([]);
+    const select = ref([]);
 
     return {
       data,
+      select
     };
   },
   methods: {
-    getData() {
-      this.data = [
-        {
-          name: "BackEnd Developer",
-        },
-        {
-          name: "FrontEnd Developer",
-        },
-        {
-          name: "Bussiness Analyst",
-        },
-        {
-          name: "Data Engineer",
-        },
-        {
-          name: "Big Data",
-        },
-        {
-          name: "Machine Learning",
-        },
-      ];
+    async getData() {
+      try {
+        
+        const response = await getDirections()
+        this.data = response.data
+      } finally {
+        this.isSubmiting = false
+      }
+      
     },
     activeLink(event, item) {
-      console.log(item);
+      
       if (event.target.className == "btn btn-outline-secondary") {
         event.target.className = "btn btn-secondary";
+        this.select.push(item)
       } else {
         event.target.className = "btn btn-outline-secondary";
+        this.select = this.select.filter((e) => e.id != item.id)
       }
+      
     },
+    async submit() {
+      console.log(this.select.map((e) => e.id))
+    }
   },
-  created() {
-    this.getData();
+  async created() {
+    await this.getData();
   },
 };
 </script>

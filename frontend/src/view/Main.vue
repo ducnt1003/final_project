@@ -203,7 +203,7 @@
         </div>
         <div class="row g-4 justify-content-center">
           <div
-            v-for="(course, index) in courses"
+            v-for="(course, index) in recomends"
             class="col-lg-4 col-md-6 wow fadeInUp"
             data-wow-delay="0.1s"
           >
@@ -554,8 +554,8 @@ export default {
       this.recomends = [
         {
           id: 1,
-          name: "Thiết kế giao diện người dùng",
-          teacher: "Thang Nguyen",
+          name: "An ninh mạng",
+          teacher: "Hang Pham",
           number_parts: 15,
           image: "img/thumbnail_placeholder.png",
           price: 1000000,
@@ -563,8 +563,8 @@ export default {
         },
         {
           id: 2,
-          name: "Kiến trúc phần mềm",
-          teacher: "Trung Nguyen",
+          name: "Lập trình mạng",
+          teacher: "Tuan Nguyen",
           number_parts: 20,
           image: "img/thumbnail_placeholder.png",
           price: 1000000,
@@ -572,8 +572,8 @@ export default {
         },
         {
           id: 3,
-          name: "Tư duy toán học",
-          teacher: "Dat Nguyen",
+          name: "Nhập môn tiếng Nhật",
+          teacher: "Huong Nguyen",
           number_parts: 12,
           image: "img/thumbnail_placeholder.png",
           price: 1000000,
