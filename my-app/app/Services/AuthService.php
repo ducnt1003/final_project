@@ -58,6 +58,20 @@ class AuthService extends BaseService
         return $this->respondWithToken($token);
     }
 
+    public function me()
+    {
+        $user = Auth::user();
+        return $this->sendResponse( [
+            'user' => $user,
+        ], __('admin.message.success'));
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return $this->sendResponse( 'Successfully logged out', __('admin.message.success'));
+    }
+
     protected function respondWithToken($token)
     {
         $user = Auth::user();
@@ -65,7 +79,7 @@ class AuthService extends BaseService
             'access_token' => $token,
             'user' => $user,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL(),
+            'expires_in' => 60*60,
         ], __('admin.message.success'));
     }
 }

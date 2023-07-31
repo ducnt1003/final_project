@@ -4,9 +4,9 @@
       <CRow class="justify-content-center">
         <CCol xs="12" md="10" lg="8" xl="6">
           <CCard class="p-0 p-sm-4">
-            <!-- <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center">
               <img :src="logoSquare" class="img-fluid" style="max-width: 200px" />
-            </div> -->
+            </div>
             <CCardBody>
               <h1 class="text-center">{{ $t('auth.login.title') }}</h1>
               <Form id="login_form"
@@ -73,9 +73,9 @@
 <script>
 import { Form, Field } from 'vee-validate';
 import * as yup from 'yup';
-// import { login } from '@/services/auth';
+import { login } from '@/services/auth';
 import { setAccessToken, getAccessToken } from '@/utils/cookies';
-import logoSquare from '@/assets/images/logo-square.jpg';
+import logoSquare from '@/assets/images/logo.jpg';
 import { mapActions } from 'vuex';
 
 export default {
@@ -92,7 +92,7 @@ export default {
       password: yup
           .string()
           .required(this.$t('validate.password.required'))
-          .min(8, this.$t('validate.password.min')),
+        //   .min(8, this.$t('validate.password.min')),
     })
 
     return {
@@ -102,34 +102,29 @@ export default {
     }
   },
   methods: {
-    // ...mapActions(['setUser']),
+    ...mapActions(['setUser']),
     async onSubmit(values) {
       const enable_otp = import.meta.env.VITE_OTP_ENABLED;
       this.isSubmiting = true
       const body = {
-        user_name: values.user_name,
+        email: values.user_name,
         password: values.password,
       }
-    //   try {
-    //     const response = await login(body)
+      try {
+        const response = await login(body)
 
-    //     if (response?.data) {
-    //       await setAccessToken(response.data.access_token, {
-    //         expires: new Date(Date.now() + response.data.expires_in * 1000),
-    //         path: "/",
-    //       })
-    //       await setAuthen2fa(false, {
-    //         expires: new Date(Date.now() + response.data.expires_in * 1000),
-    //         path: "/",
-    //       })
-    //       this.setUser(response.data)
-    //       if (enable_otp == 'false')
-    //         this.$router.push({name: "Home"})
-    //       else this.$router.push({name: "TwoFactorAuthentication"})
-    //     }
-    //   } finally {
-    //     this.isSubmiting = false
-    //   }
+        if (response?.data) {
+          await setAccessToken(response.data.access_token, {
+            expires: new Date(Date.now() + response.data.expires_in * 1000),
+            path: "/",
+          })
+          console.log( new Date(Date.now() + response.data.expires_in * 1000))
+          this.setUser(response.data)
+          this.$router.push({name: "Home"})
+        }
+      } finally {
+        this.isSubmiting = false
+      }
     },
   },
 }

@@ -28,7 +28,7 @@
 
 <script>
 import { useStore } from "vuex";
-// import { logout } from "@/services/auth";
+import { logout } from "@/services/auth";
 import { removeAccessToken } from "@/utils/cookies";
 import { mapActions } from "vuex";
 
@@ -45,11 +45,9 @@ export default {
   methods: {
     // ...mapActions(["removeNotification"]),
     async logout() {
-    //   await logout();
+        await logout();
       removeAccessToken({ path: "/" });
-      removeSelectedDevices();
-      removeAuthen2fa();
-      this.removeNotification();
+
       this.$router.push({ name: "Login" });
     },
   },

@@ -28,9 +28,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
-    // Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     // Route::post('/refresh', [AuthController::class, 'refresh']);
-    // Route::post('/me', [AuthController::class, 'me']);
+    Route::post('/me', [AuthController::class, 'me']);
 });
 
 Route::prefix('category')->group(function () {
@@ -81,8 +81,9 @@ Route::prefix('recomend')->group(function () {
     // Route::delete('/delete/{id}', [CourseController::class, 'destroy']);
 });
 
-Route::prefix('direction')->group(function () {
+Route::prefix('direction')->middleware(['auth'])->group(function () {
     Route::get('/', [DirectionController::class, 'list']);
+    Route::post('/select', [DirectionController::class, 'select']);
     // Route::post('/edit/{id}', [CategoryController::class, 'update']);
     // // Route::get('/{id}', [CategoryController::class, 'getDetail']);
     // Route::post('/create', [CategoryController::class, 'store']);

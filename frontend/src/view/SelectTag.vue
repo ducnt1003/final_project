@@ -97,6 +97,7 @@ export default {
     },
     async submit() {
       console.log(this.select.map((e) => e.id))
+      this.$router.push('/')
     }
   },
   async created() {

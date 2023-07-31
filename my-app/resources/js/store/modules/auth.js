@@ -20,6 +20,6 @@ export const mutations = {
 export const actions = {
     setUser({commit},data){
         commit('SET_USER',data.user);
-        commit('SET_ROLE',data.user.role);
+        commit('SET_ROLE',data.user.role_id);
     },
 }

@@ -14,6 +14,7 @@ class User extends Authenticatable implements JWTSubject
     const ADMIN = 2;
     const TEACHER = 1;
     const STUDENT = 0;
+    const EXPERT = 3;
 
     /**
      * The attributes that are mass assignable.

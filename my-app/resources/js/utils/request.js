@@ -28,9 +28,9 @@ service.interceptors.request.use(
     (config) => {
       // Set JWT token
       const token = getAccessToken()
-    //   if (token) {
-    //     config.headers['Authorization'] = 'Bearer ' + token
-    //   } else Router.push({ name: 'Login' });
+      if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token
+      } else Router.push({ name: 'Login' });
 
       return config
     },
