@@ -22,7 +22,7 @@
 
         <div class="col-lg-6 mb-5 mb-lg-0">
           <div class="card">
-            <h2 class="card-title px-md-5 text-center">Đăng nhập</h2>
+            <h2 class="card-title px-md-5 text-center mt-5">Đăng nhập</h2>
             <div class="card-body py-5 px-md-5">
               <form>
                 <!-- Email input -->

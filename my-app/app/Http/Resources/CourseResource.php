@@ -23,6 +23,8 @@ class CourseResource extends JsonResource
             'price' => $this->price,
             'description' => $this->description,
             'parts' => $this->parts,
+            'teacher' => $this->teacher->user,
+            'image' => $this->photo ? env('APP_URL').'/'.$this->photo : env('APP_URL').'/'.'thumbnail_placeholder.png',
         ];
     }
 }

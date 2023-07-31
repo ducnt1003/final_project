@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\CourseCollection;
 use App\Http\Resources\CourseResource;
 use App\Repositories\Course\CourseRepository;
 use Exception;
@@ -27,9 +28,12 @@ class CourseService extends BaseService
     }
 
     public function getList($request) {
-        $search = $request->search ?? null;
-        $courses = $this->courseRepo->getList($search);
-        return $this->sendResponse($courses, __('admin.message.success'));
+        $search = $request->search ? $request->search : null;
+        $cate = $request->category_id ? $request->category_id : null;
+        $teacher = $request->teacher ? $request->teacher : null;
+        $per_page = $request->per_page ? $request->per_page : 9;
+        $courses = $this->courseRepo->getList($search, $cate, $teacher, $per_page);
+        return $this->sendResponse(new CourseCollection($courses), __('admin.message.success'));
     }
 
     public function getDetail($id) {

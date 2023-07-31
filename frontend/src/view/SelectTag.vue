@@ -60,7 +60,8 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-import { getDirections } from "../services/direction";
+import { getDirections, selectDirection } from "../services/direction";
+import { getAccessToken } from '@/utils/cookies'
 export default {
   name: "SelectTag",
 
@@ -96,12 +97,32 @@ export default {
       
     },
     async submit() {
-      console.log(this.select.map((e) => e.id))
-      this.$router.push('/')
+      // console.log()
+      const data = {
+        directions : this.select.map((e) => e.id)
+      }
+      try {
+        const response = await selectDirection(data)
+        if (response.success) {
+          this.$router.push('/')
+        }
+      } finally {
+
+      }
+      
     }
   },
   async created() {
     await this.getData();
   },
+  async beforeRouteEnter(to, from, next) {
+      const token = await getAccessToken();
+
+      if (!token) {
+        return next({ name: "Login" });
+      } else {
+        return next();
+      }
+  }
 };
 </script>

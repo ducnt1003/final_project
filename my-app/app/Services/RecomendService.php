@@ -79,7 +79,7 @@ class RecomendService extends BaseService
         for ($i = 0; $i < count($results); $i++) {
             if (in_array(($i + 1), $enrolled)) {
                 $results[$i] = 0;
-            } else $results[$i] = 0.2* $results[$i] + (1 - 0.2) * $data[$i];
+            } else $results[$i] = 0.5* $results[$i] + (1 - 0.5) * $data[$i];
         }
         arsort($results);
 

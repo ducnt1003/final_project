@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Models\Course;
 use App\Models\Enroll;
 use App\Models\Student;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -17,6 +19,34 @@ class EnrollService extends BaseService
      */
     public function __construct()
     {
+    }
+
+    public function enroll($request) {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+        $course_id = $request->course_id;
+        try {
+            DB::table('enrolls')->insert([
+                'student_id' => $student->id,
+                'course_id' => $course_id
+            ]);
+        } catch (Exception $e) {
+            Log::error($e);
+            return $this->sendError(null, __('admin.message.error'));
+        }
+        return $this->sendResponse(null, __('admin.message.success'));
+    }
+
+    public function isEnrolled($request) {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+        $course_id = $request->course_id;
+        $enroll = DB::table('enrolls')->where('student_id', $student->id)->where('course_id', $course_id)->first();
+        // Log::info()
+        if (!$enroll) {
+            return $this->sendResponse(false, __('admin.message.success'));
+        }
+        return $this->sendResponse(true, __('admin.message.success'));
     }
 
     /**

@@ -54,6 +54,8 @@ Route::prefix('enroll')->group(function () {
     Route::get('/dump_csv', [EnrollController::class, 'dump_csv']);
     Route::get('/gen_matrix', [EnrollController::class, 'calculateUserScore']);
     Route::get('/recomend/{id}', [EnrollController::class, 'recomend']);
+    Route::post('/is_enrolled', [EnrollController::class, 'isEnrolled'])->middleware(['auth']);
+    Route::post('/enroll', [EnrollController::class, 'enroll'])->middleware(['auth']);
     // Route::post('/edit/{id}', [CourseController::class, 'update']);
     // // Route::get('/{id}', [CourseController::class, 'getDetail']);
     // Route::post('/create', [CourseController::class, 'store']);
@@ -71,7 +73,11 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('recomend')->group(function () {
     Route::get('/get-data', [RecomendController::class, 'getData']);
+
+    Route::get('/test', [RecomendController::class, 'test']);
     Route::get('/{id}', [RecomendController::class, 'recomend']);
+
+
 
 
 

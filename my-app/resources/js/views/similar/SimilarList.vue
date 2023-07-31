@@ -167,7 +167,7 @@
                 type="heatmap"
                 :options="chartOptions"
                 :series="series"
-            ></apexchart>   
+            ></apexchart>
         </ContentCard> -->
     </div>
 </template>

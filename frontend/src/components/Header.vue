@@ -38,9 +38,9 @@
               >Danh mục</a
             >
             <div class="dropdown-menu fade-down m-0">
-              <a href="team.html" class="dropdown-item">Đầu tư</a>
-              <a href="testimonial.html" class="dropdown-item">Ngoại ngữ</a>
-              <a href="404.html" class="dropdown-item">Kĩ năng mềm</a>
+              <a href="/" class="dropdown-item">Đầu tư</a>
+              <a href="/" class="dropdown-item">Ngoại ngữ</a>
+              <a href="/" class="dropdown-item">Kĩ năng mềm</a>
             </div>
           </div>
           <a href="/" class="nav-item nav-link">Liên hệ</a>

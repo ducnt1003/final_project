@@ -99,6 +99,14 @@ class EnrollController extends Controller
         //
     }
 
+    public function isEnrolled(Request $request) {
+        return $this->service->isEnrolled($request);
+    }
+
+    public function enroll(Request $request) {
+        return $this->service->enroll($request);
+    }
+
     public function dump_csv()
     {
         ini_set('max_execution_time', 500);
@@ -243,8 +251,8 @@ class EnrollController extends Controller
         if ($enrolled) return 1;
         $course_similar = $row[$course_id - 1];
         arsort($course_similar);
-        $top = array_slice($course_similar, 1, 3);
-        return array_sum($top) / 3;
+        $top = array_slice($course_similar, 1, 6);
+        return array_sum($top) / 5;
     }
 
     public function recomend($id)

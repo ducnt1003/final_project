@@ -18,4 +18,8 @@ class DirectionController extends Controller
     public function list() {
         return $this->directionService->getList();
     }
+
+    public function select(Request $request) {
+        return $this->directionService->select($request);
+    }
 }

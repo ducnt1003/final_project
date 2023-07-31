@@ -72,6 +72,8 @@
 <script>
 import VuePdfEmbed from "vue-pdf-embed";
 import { ref } from "@vue/reactivity";
+import { getCourseDetail } from "../services/course";
+import { useRoute } from "vue-router";
 export default {
   components: {
     VuePdfEmbed,
@@ -80,10 +82,12 @@ export default {
     const parts = ref([]);
     const selected = ref({});
     const course = ref({});
+    const courseId = useRoute().params.id;
     return {
       parts,
       selected,
       course,
+      courseId
     };
   },
   methods: {
@@ -92,17 +96,11 @@ export default {
       this.selected = documents[index];
     },
     async getData() {
-      this.course ={
-        id: 1,
-        name: "Thiết kế giao diện người dùng",
-        teacher: "Thang Nguyen",
-        number_parts: 15,
-        image: "img/thumbnail_placeholder.png",
-        price: 1000000,
-        number_enrolls: 120,
-        description:
-          "Đa số người dùng  đánh giá chất lượng của 1 hệ thống thông qua giao diện hơn là thông qua chức năng. Giao diện không tốt là nguyên nhân dẫn người dùng đến lỗi. Thiết kế giao diện người dùng không tốt là nguyên nhân dẫn đến nhiều phần mềm không được sử dụng.",
-      },
+      try {
+        const response = await getCourseDetail(this.courseId);
+        this.course = response.data;
+      } finally {
+      }
       this.parts = [
         {
           name: "Tổng quan",

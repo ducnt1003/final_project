@@ -7,3 +7,11 @@ export function getDirections(params) {
         params: params,
     });
 }
+
+export function selectDirection(data) {
+    return request({
+      url: '/direction/select',
+      method: 'post',
+      data: data,
+    })
+  }

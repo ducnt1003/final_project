@@ -20,13 +20,13 @@ const routes = [
       },
       {
         /** Full page layout routes */
-        path: '/course-detail',
+        path: '/course-detail/:id',
         name: 'Course-Detail',
         component: () => import('@/view/CourseDetail.vue'),
       },
       {
         /** Full page layout routes */
-        path: '/course-document',
+        path: '/course-document/:id',
         name: 'Course-Document',
         component: () => import('@/view/Document.vue'),
       },

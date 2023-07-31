@@ -23,7 +23,7 @@ class CourseController extends Controller
         $this->courseService = $courseService;
     }
 
-    public function list(Request $request): JsonResponse
+    public function list(Request $request)
     {
         return $this->courseService->getList($request);
     }

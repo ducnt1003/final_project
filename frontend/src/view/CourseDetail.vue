@@ -66,7 +66,9 @@
                       :item-key="part_index"
                     >
                       <CAccordionHeader>
-                        <strong>Buổi {{ part_index + 1  }}:{{ part.name }}</strong>
+                        <strong
+                          >Buổi {{ part_index + 1 }}:{{ part.name }}</strong
+                        >
                       </CAccordionHeader>
                       <CAccordionBody>
                         <CListGroup>
@@ -94,7 +96,11 @@
               <h3 class="text-white py-3 px-4 m-0">Thông tin khóa học</h3>
               <div class="d-flex justify-content-between border-bottom px-4">
                 <h6 class="text-white my-3">Giảng viên</h6>
-                <h6 class="text-white my-3">{{ course.teacher }}</h6>
+                <h6 class="text-white my-3">{{ course.teacher?.name }}</h6>
+              </div>
+              <div class="d-flex justify-content-between border-bottom px-4">
+                <h6 class="text-white my-3">Danh mục</h6>
+                <h6 class="text-white my-3">{{ course.category }}</h6>
               </div>
               <div class="d-flex justify-content-between border-bottom px-4">
                 <h6 class="text-white my-3">Đánh giá</h6>
@@ -105,8 +111,8 @@
                 <h6 class="text-white my-3">{{ course.number_parts }}</h6>
               </div>
               <div class="d-flex justify-content-between border-bottom px-4">
-                <h6 class="text-white my-3">Thời lượng</h6>
-                <h6 class="text-white my-3">3 giờ</h6>
+                <h6 class="text-white my-3">Độ khó</h6>
+                <h6 class="text-white my-3">{{ course.level }}</h6>
               </div>
               <div class="d-flex justify-content-between px-4">
                 <h6 class="text-white my-3">Ngôn ngữ</h6>
@@ -118,11 +124,12 @@
               </div>
 
               <div class="py-3 px-4">
-                <a
+                <button
                   class="btn btn-block btn-secondary py-3 px-5"
-                  href="/course-document"
-                  >Đăng ký</a
+                  @click="getDocument()"
                 >
+                  {{ enroll_text }}
+                </button>
               </div>
             </div>
 
@@ -158,59 +165,61 @@
 </template>
 <script>
 import { ref } from "@vue/reactivity";
+import { enroll, getCourseDetail, isEnroll } from "../services/course";
+import { useRoute } from "vue-router";
+import { getAccessToken } from "@/utils/cookies";
 export default {
   setup() {
     const course = ref({});
     const recomend = ref([]);
     const parts = ref([]);
+    const courseId = useRoute().params.id;
+    const enroll_text = ref("Đăng ký");
     return {
       course,
       recomend,
       parts,
+      courseId,
+      enroll_text,
     };
   },
   methods: {
     async getData() {
-      (this.course = {
-        id: 1,
-        name: "Thiết kế giao diện người dùng",
-        teacher: "Thang Nguyen",
-        number_parts: 15,
-        image: "img/thumbnail_placeholder.png",
-        price: 1000000,
-        number_enrolls: 120,
-        description:
-          "Đa số người dùng  đánh giá chất lượng của 1 hệ thống thông qua giao diện hơn là thông qua chức năng. Giao diện không tốt là nguyên nhân dẫn người dùng đến lỗi. Thiết kế giao diện người dùng không tốt là nguyên nhân dẫn đến nhiều phần mềm không được sử dụng. Cùng Kteam tìm hiểu chi tiết về Thiết kế giao diện người dùng nào",
-      }),
-        (this.recomend = [
-          {
-            id: 1,
-            name: "Thiết kế giao diện người dùng",
-            teacher: "Thang Nguyen",
-            number_parts: 15,
-            image: "/img/thumbnail_placeholder.png",
-            price: 1000000,
-            number_enrolls: 120,
-          },
-          {
-            id: 2,
-            name: "Kiến trúc phần mềm",
-            teacher: "Trung Nguyen",
-            number_parts: 20,
-            image: "/img/thumbnail_placeholder.png",
-            price: 1000000,
-            number_enrolls: 120,
-          },
-          {
-            id: 3,
-            name: "Tư duy toán học",
-            teacher: "Dat Nguyen",
-            number_parts: 12,
-            image: "/img/thumbnail_placeholder.png",
-            price: 1000000,
-            number_enrolls: 120,
-          },
-        ]);
+      try {
+        const response = await getCourseDetail(this.courseId);
+        this.course = response.data;
+      } finally {
+      }
+
+      this.recomend = [
+        {
+          id: 1,
+          name: "Thiết kế giao diện người dùng",
+          teacher: "Thang Nguyen",
+          number_parts: 15,
+          image: "/img/thumbnail_placeholder.png",
+          price: 1000000,
+          number_enrolls: 120,
+        },
+        {
+          id: 2,
+          name: "Kiến trúc phần mềm",
+          teacher: "Trung Nguyen",
+          number_parts: 20,
+          image: "/img/thumbnail_placeholder.png",
+          price: 1000000,
+          number_enrolls: 120,
+        },
+        {
+          id: 3,
+          name: "Tư duy toán học",
+          teacher: "Dat Nguyen",
+          number_parts: 12,
+          image: "/img/thumbnail_placeholder.png",
+          price: 1000000,
+          number_enrolls: 120,
+        },
+      ];
       this.parts = [
         {
           name: "Tổng quan",
@@ -245,12 +254,41 @@ export default {
               name: "Bài tập",
             },
           ],
-        }
+        },
       ];
+    },
+    async getDocument() {
+      const token = getAccessToken();
+      if (!token) {
+        this.$router.push({ name: "Login" });
+      } else {
+        if (this.enroll_text != "Tiếp tục") {
+          try {
+            const response = await enroll({course_id : this.courseId})
+          } finally {}
+        } 
+        this.$router.push({
+          name: "Course-Document",
+          params: { id: this.courseId },
+        });
+      }
+    },
+    async checkEnroll() {
+      const token = getAccessToken();
+      if (!!token) {
+        try {
+          const response = await isEnroll({course_id : this.courseId});
+          if (response.data == true) {
+            this.enroll_text = "Tiếp tục";
+          }
+        } finally {
+        }
+      }
     },
   },
   async created() {
     await this.getData();
+    await this.checkEnroll();
   },
 };
 </script>

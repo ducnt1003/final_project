@@ -97,17 +97,18 @@
                 <div
                   class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
                 >
-                  <a
-                    href="/course-detail/"
+                <router-link
+                    :to="{ name: 'Course-Detail', params: { id: course.id } }"
                     class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
                     style="border-radius: 30px 0 0 30px"
-                    >Tìm hiểu</a
+                    >Tìm hiểu</router-link
                   >
-                  <a
+                  <router-link
+                    :to="{ name: 'Course-Detail', params: { id: course.id } }"
                     href="#"
                     class="flex-shrink-0 btn btn-sm btn-primary px-3"
                     style="border-radius: 0 30px 30px 0"
-                    >Tham gia</a
+                    >Tham gia</router-link
                   >
                 </div>
               </div>
@@ -126,7 +127,7 @@
               <div class="d-flex border-top">
                 <small class="flex-fill text-center border-end py-2"
                   ><i class="fa fa-user-tie text-primary me-2"></i
-                  >{{ course.teacher }}</small
+                  >{{ course.teacher.name }}</small
                 >
 
                 <small class="flex-fill text-center py-2"
@@ -141,17 +142,11 @@
       <div class="container">
         <div class="row justify-content-center" style="margin-top: 20px">
           <div class="col-4 justify-content-center" style="display: flex; justify-content: flex-center">
-            <CPagination aria-label="Page navigation example">
-              <CPaginationItem aria-label="Previous" href="#" disabled
-                ><span aria-hidden="true">&laquo;</span></CPaginationItem
-              >
-              <CPaginationItem href="#" active>1</CPaginationItem>
-              <CPaginationItem href="#">2</CPaginationItem>
-              <CPaginationItem href="#">3</CPaginationItem>
-              <CPaginationItem aria-label="Next" href="#"
-                ><span aria-hidden="true">&raquo;</span></CPaginationItem
-              >
-            </CPagination>
+            <Pagination
+              :pages="pages"
+              @pageChange="handlePageChange"
+              :currentPage="currentPage"
+          />
           </div>
         </div>
       </div>
@@ -161,102 +156,63 @@
 </template>
 <script>
 import { ref } from "@vue/reactivity";
+import { getCourses } from "../services/course";
+import Pagination from '@/components/Pagination.vue'
 export default {
+  components: {
+    Pagination, 
+  },
   setup() {
     const courses = ref([]);
+    const param = ref('');
+    const pages = ref(1)
+    const currentPage = ref(1)
+    const queries = ref({});
     return {
       courses,
+      param,
+      pages,
+      currentPage
     };
   },
+  // watch: {
+  //   queries(queries) {
+  //     this.setQueriesData(queries)
+  //   },
+  // },
   methods: {
     async getData() {
-      this.courses = [
-        {
-          id: 1,
-          name: "Thiết kế giao diện người dùng",
-          teacher: "Thang Nguyen",
-          number_parts: 15,
-          image: "img/thumbnail_placeholder.png",
-          price: '100.0000',
-          number_enrolls: 120,
-        },
-        {
-          id: 2,
-          name: "Kiến trúc phần mềm",
-          teacher: "Trung Nguyen",
-          number_parts: 20,
-          image: "img/thumbnail_placeholder.png",
-          price: '1000000',
-          number_enrolls: 120,
-        },
-        {
-          id: 3,
-          name: "Tư duy toán học",
-          teacher: "Dat Nguyen",
-          number_parts: 12,
-          image: "img/thumbnail_placeholder.png",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 1,
-          name: "Quản lý dự án phần mềm",
-          teacher: "Thang Nguyen",
-          number_parts: 15,
-          image: "img/thumbnail_placeholder.png",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 2,
-          name: "Phân tích và thiết kế hướng đối tượng",
-          teacher: "Trung Nguyen",
-          number_parts: 20,
-          image: "img/thumbnail_placeholder.png",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 3,
-          name: "Đại số tuyến tính",
-          teacher: "Dat Nguyen",
-          number_parts: 12,
-          image: "img/thumbnail_placeholder.png",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 1,
-          name: "Phát triển ứng dụng Web",
-          teacher: "Thang Nguyen",
-          number_parts: 15,
-          image: "img/thumbnail_placeholder.png",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 2,
-          name: "Lịch sử Việt Nam cận đại",
-          teacher: "Trung Nguyen",
-          number_parts: 20,
-          image: "img/thumbnail_placeholder.png",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-        {
-          id: 3,
-          name: "Lịch sử Hà Nội",
-          teacher: "Dat Nguyen",
-          number_parts: 12,
-          image: "img/thumbnail_placeholder.png",
-          price: 1000000,
-          number_enrolls: 120,
-        },
-      ];
+      try {
+        const response = await getCourses(this.queries)
+        this.courses = response.data.data
+        this.pages = response.data.pagination.total_pages
+        this.currentPage = parseInt(this.queries?.['page']) || 1
+      } finally {
+
+      }
+      
     },
+    setQueries() {
+      this.queries = this.$route.query;
+    },
+    handlePageChange(number) {
+      this.$router.push({ query: {page: number } })
+    }
   },
   async created() {
     await this.getData();
+
+    this.$watch(
+      () => this.$route.query,
+      async () => {
+        if (this.$route.name === "Course-List") {
+          
+          this.setQueries();
+          await this.getData();
+          // this.isLoading = false;
+        }
+      }
+    );
   },
 };
 </script>
