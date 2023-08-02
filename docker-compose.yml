@@ -35,25 +35,21 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - 8083:80
+      - 8000:80
     volumes:
       - ./my-app/:/var/www/html/my-app
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - app-network
-  # supervisor:
-  #   build:
-  #     context: ./
-  #     dockerfile: docker/supervisor/Dockerfile
-  #   container_name: supervisor
-  #   restart: unless-stopped
-  #   tty: true
-  #   volumes:
-  #     - ./my-app/:/var/www/html/my-app/
-  #     - ./docker/supervisor/queue.ini:/etc/supervisor.d/queue.ini
-  #   networks:
-  #     - app-network
-  # db:
+  webserver_fe:
+    build:
+      context: ./
+      dockerfile: docker/fe/Dockerfile
+    container_name: fe
+    ports:
+      - 3001:80
+    networks:
+      - app-network
   #   #ccontainer db
   #   image: mysql:8.0 #image mysql:8.0
   #   container_name: db
