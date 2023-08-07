@@ -298,12 +298,15 @@ class EnrollController extends Controller
         $datas = [];
         while (($data = fgetcsv($file, 0, ",")) !== FALSE) {
             $datas[] = $data;
+
         }
+
         $data = $datas[$id-1];
         $enrolled = Enroll::join('courses', 'enrolls.course_id', '=', 'courses.id')
             ->where('student_id', $id)
             ->pluck("courses.id")
             ->toArray();
+            Log::info($enrolled);
         for ($i = 0; $i < count($results); $i++) {
             if (in_array(($i+1), $enrolled)) {
                 $results[$i] = 0;

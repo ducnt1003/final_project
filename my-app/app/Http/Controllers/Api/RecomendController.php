@@ -272,4 +272,8 @@ class RecomendController extends Controller
 
         return $dot_product / ($u_val * $v_val);
     }
+
+    public function changeConfig(Request $request) {
+        return $this->recomendService->changeConfig($request);
+    }
 }

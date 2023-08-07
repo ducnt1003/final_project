@@ -6,3 +6,11 @@ export function recomend(id) {
       method: "get",
     });
 }
+
+export function changeConfig(data) {
+    return request({
+      url: "/recomend/change-config",
+      method: "post",
+      data: data,
+    });
+}

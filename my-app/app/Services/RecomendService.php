@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use App\Models\Direction;
 use App\Models\Enroll;
@@ -16,6 +17,8 @@ class RecomendService extends BaseService
 {
     public function recomend($id)
     {
+        $config = DB::table('configs')->first();
+        $k = $config->value;
         $directions = Direction::join('student_direction', 'directions.id', '=', 'student_direction.direction_id')
             ->where('student_direction.student_id', '=', $id)->get();
         $courses = Course::get()->toArray();
@@ -79,7 +82,7 @@ class RecomendService extends BaseService
         for ($i = 0; $i < count($results); $i++) {
             if (in_array(($i + 1), $enrolled)) {
                 $results[$i] = 0;
-            } else $results[$i] = 0.5* $results[$i] + (1 - 0.5) * $data[$i];
+            } else $results[$i] = $k* $results[$i] + (1 - $k) * $data[$i];
         }
         arsort($results);
 
@@ -87,11 +90,19 @@ class RecomendService extends BaseService
         $array = array_map(function ($key, $value) {
             return [
                 'id' => $key + 1,
-                'course' => Course::find($key + 1)->name,
+                'course' => new CourseResource(Course::find($key + 1)),
                 'value' => number_format($value,3)
             ];
         }, array_keys($newArray), array_values($newArray));
         return $this->sendResponse($array, __('admin.message.success'));
         // return $array;
+    }
+
+    public function changeConfig($request) {
+        $config = $request->config;
+        $old_config = DB::table('configs')->first();
+        DB::table('configs')->where('id', $old_config->id)->delete();
+        DB::table('configs')->insert(['value' => $config]);
+        return $this->sendResponse(null, __('admin.message.success'));
     }
 }

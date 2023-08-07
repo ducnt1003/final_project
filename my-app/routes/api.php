@@ -73,6 +73,7 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('recomend')->group(function () {
     Route::get('/get-data', [RecomendController::class, 'getData']);
+    Route::post('/change-config', [RecomendController::class, 'changeConfig']);
 
     Route::get('/test', [RecomendController::class, 'test']);
     Route::get('/{id}', [RecomendController::class, 'recomend']);

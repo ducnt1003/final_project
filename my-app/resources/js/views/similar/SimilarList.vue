@@ -112,14 +112,13 @@
             <template #title> Combine Weight </template>
             <Form
                 as="CForm"
-                @submit="handleSubmit"
+                @submit="changeConfig"
                 :validation-schema="schema"
                 v-slot="{ errors }"
             >
                 <CRow>
                     <CCol xs="10">
                         <FormField
-                            v-model="config"
                             type="CFormInput"
                             name="config"
                             label="Giá trị"
@@ -132,8 +131,7 @@
                         <CButton
                             color="primary"
                             class="text-white text-nowrap px-sm-5"
-                            @click="changeConfig()"
-                            :disabled="isSubmiting || isLoading"
+                            type="submit"
                         >
                             <CSpinner
                                 v-if="isSubmiting"
@@ -183,7 +181,7 @@ import * as yup from "yup";
 import VueApexCharts from "vue3-apexcharts";
 import json from "./similar.json";
 import { searchStudent } from "../../services/user";
-import { recomend } from "../../services/recomend";
+import { recomend, changeConfig } from "../../services/recomend";
 
 export default {
     components: {
@@ -217,6 +215,7 @@ export default {
         const enroll_pages = ref(1);
         const enroll_isLoading = ref(false);
         const config = ref(0.5);
+        const toast = useToast();
         return {
             datas,
             chartOptions,
@@ -229,6 +228,7 @@ export default {
             enroll_pages,
             enroll_isLoading,
             config,
+            toast
         };
     },
     methods: {
@@ -252,10 +252,19 @@ export default {
             }
         },
         async findSimilar() {
-            console.log(this.student);
             try {
                 const response = await recomend(this.student);
                 this.items = response.data.slice(0, 5);
+                this.items = this.items.map((e) => {
+                    return {
+                        id : e.id,
+                        course : e.course.name,
+                        value : e.value
+                    }
+
+                }
+
+                )
                 console.log(this.items);
             } catch (error) {
                 console.error(error);
@@ -272,7 +281,16 @@ export default {
             //     })
             // })
         },
-        changeConfig() {},
+        async changeConfig(result) {
+            try {
+                const response = await changeConfig(result);
+                this.toast.success("Chỉnh sửa config thành công");
+                this.findSimilar(this.student)
+
+            } catch (error) {
+                console.error(error);
+            }
+        },
     },
     created() {
         this.courses = [
