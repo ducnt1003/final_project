@@ -27,7 +27,7 @@ export function createCourse(data) {
 export function editCourse(id, data) {
     return request({
         url: "/course/edit/" + id,
-        method: "put",
+        method: "post",
         data: data,
     });
 }

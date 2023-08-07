@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Http\Resources\CourseCollection;
 use App\Http\Resources\CourseResource;
+use App\Models\CoursePart;
 use App\Repositories\Course\CourseRepository;
+use Countable;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -89,17 +91,48 @@ class CourseService extends BaseService
     public function update($id, $request) {
 
         $data = [];
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'level' => $request->level,
+            'category_id' => $request->category,
+            'teacher_id' => $request->teacher_id,
+        ];
 
-        if ($request->name) $data['name'] = $request->name;
-        if ($request->description) $data['description'] = $request->description;
-        if ($request->photo) $data['photo'] = $request->photo;
-        if ($request->price) $data['price'] = $request->price;
-        if ($request->level) $data['level'] = $request->level;
-        if ($request->category_id) $data['category_id'] = $request->category_id;
-        if ($request->teacher_id) $data['teacher_id'] = $request->teacher_id;
-
-        $course = $this->courseRepo->update($id, $data);
-        if (!$course) {
+        $photo = $this->uploadService->uploadPhotoCourse($request);
+        if ($photo) $data['photo'] = $photo;
+        // dd($data);
+        try {
+            $course = $this->courseRepo->update($id, $data);
+            $index = 0;
+            $parts = $request->parts ? json_decode('['.$request->parts.']', TRUE) : [];
+            $course_parts = [];
+            foreach($parts as $part) {
+                $index ++;
+                if (isset($part['id'])) {
+                    $data_part = [
+                        'course_id' => $id,
+                        'part' => $index,
+                        'name' => $part['name'],
+                        'description' => $part['description'],
+                    ];
+                    $course_part = CoursePart::where('id', $part['id'])->update($data_part);
+                    $course_parts[] = $part['id'];
+                } else {
+                    $data_part = [
+                        'course_id' => $id,
+                        'part' => $index,
+                        'name' => $part['name'],
+                        'description' => $part['description'],
+                    ];
+                    $course_part = CoursePart::create($data_part);
+                    $course_parts[] = $course_part->id;
+                }
+            }
+            CoursePart::whereNotIn('id', $course_parts)->delete();
+        }catch (Exception $e) {
+            Log::error($e);
             return $this->sendError(null, __('admin.message.error'));
         }
         return $this->sendResponse($course, __('admin.message.success'));

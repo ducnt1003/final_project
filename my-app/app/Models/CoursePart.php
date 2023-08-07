@@ -13,9 +13,14 @@ class CoursePart extends Model
     protected $fillable = [
         'id',
         'course_id',
+        'name',
         'part',
         'description',
     ];
 
     public $timestamps = true;
+    public function documents()
+     {
+        return $this->hasMany(Document::class, 'course_part_id');
+     }
 }

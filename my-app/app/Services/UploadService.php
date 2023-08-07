@@ -10,7 +10,7 @@ class UploadService extends BaseService
         if($request->file('photo')){
             $file_name = time().'_'.$request->photo->getClientOriginalName();
             $file_path = $request->file('photo')->storeAs('uploads', $file_name, 'public');
-            return $file_path;
+            return 'storage/'.$file_path;
         }
         return null;
     }

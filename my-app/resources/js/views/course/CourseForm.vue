@@ -65,7 +65,7 @@
                 label="Ảnh"
                 alignLabel="top"
                 textareaRows="3"
-                :value="data?.description"
+                :image_url="data?.image"
             />
             <CRow class="mb-3">
                 <CCol sm="5" lg="4" xl="3" class="align-self-center">
@@ -87,12 +87,14 @@
                         </div>
                     </CCardHeader>
                     <CCardBody>
+                        <!-- <HiddenField :name="`parts[${index}].id`" /> -->
+                        <Field as="hidden" :name="`parts[${index}].id`" :value="getPartInfo(index).id" />
                         <FormField
                             type="CFormInput"
                             :name="`parts[${index}].name`"
                             :value="getPartInfo(index).name"
                             :label="$t('common.name')"
-                            :error="errors?.[`components[${index}].name`]"
+                            :error="errors?.[`parts[${index}].name`]"
                             required
                         />
                         <FormField
@@ -103,7 +105,7 @@
                             textareaRows="3"
                             :label="$t('common.description')"
                             :error="
-                                errors?.[`components[${index}].description`]
+                                errors?.[`parts[${index}].description`]
                             "
                         />
                         <div
@@ -181,15 +183,19 @@ import { useRoute } from "vue-router";
 import { ref } from "@vue/reactivity";
 import * as yup from "yup";
 import { getCategories } from "@/services/category";
-import { createCourse, getCourseDetail } from "@/services/course";
+import { createCourse, getCourseDetail, editCourse } from "@/services/course";
 import * as levels from "@/configs/course/level";
 import { useToast } from "vue-toastification";
+import HiddenField from "@/components/Common/FormHiddenField.vue";
+import { Field } from "vee-validate";
 
 export default {
     components: {
         ContentCard,
         FormField,
         Form,
+        HiddenField,
+        Field
     },
     setup() {
         const courseId = useRoute().params.courseId;
@@ -205,7 +211,7 @@ export default {
         const parts = ref([]);
         const data = ref({});
         const toast = useToast();
-
+        const image_url = ref("");
 
         return {
             courseId,
@@ -216,6 +222,7 @@ export default {
             parts,
             data,
             toast,
+            image_url,
         };
     },
     computed: {
@@ -224,14 +231,13 @@ export default {
         },
     },
     methods: {
-        async getCourseInfo() {
+        async getCourseInfo(courseId) {
             this.isLoading = true;
             try {
-                const response = await getCourseDetail(this.courseId);
+                const response = await getCourseDetail(courseId);
                 if (response) {
                     this.data = response.data;
-                    this.parts = this.data.parts
-                    console.log(response)
+                    this.parts = this.data.parts;
                 }
             } finally {
                 this.isLoading = false;
@@ -256,6 +262,7 @@ export default {
         async handleSubmit(result) {
             this.isSubmiting = true;
             try {
+                // console.log(result.image);
                 let formData = new FormData();
                 formData.append("name", result.name);
                 formData.append("category", result.category);
@@ -264,20 +271,30 @@ export default {
                 formData.append("teacher_id", 2);
                 formData.append("description", result.description ?? null);
                 formData.append("photo", result.image ?? null);
-                formData.append("parts", result.parts.map((e) => {
-                    return JSON.stringify(e)
-                }) ?? null);
+                if (result.parts) {
+                    formData.append(
+                    "parts",
+                    result.parts.map((e) => {
+                        return JSON.stringify(e);
+                    }) ?? null
+                );
+                }
+
 
                 if (!this.courseId) {
                     const response = await createCourse(formData);
                     if (response) {
-                        console.log(response);
-                        this.toast.success(
-                            'Tạo khóa học mới thành công'
-                        );
+                        console.log(response.data.id)
+                        await this.getCourseInfo(response.data.id);
+                        this.$router.replace({name: "CourseEdit", params:{courseId: response.data.id}})
+                        this.toast.success("Tạo khóa học mới thành công");
                     }
                 } else {
+                    const response = await editCourse(this.courseId, formData);
 
+                    this.$router.replace({name: "CourseEdit", params:{courseId: this.courseId}})
+                    await this.getCourseInfo(this.courseId);
+                    this.toast.success("Chỉnh sửa khóa học mới thành công");
                 }
             } finally {
                 this.isSubmiting = false;

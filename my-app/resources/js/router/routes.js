@@ -63,6 +63,15 @@ const routes = [
                             title: "Chỉnh sửa khóa học",
                         },
                     },
+                    {
+                        path: "upload/:partId",
+                        name: "CourseUpload",
+                        component: () =>
+                            import("../views/course/DocumentForm.vue"),
+                        meta: {
+                            title: "Upload tài liệu",
+                        },
+                    },
                 ],
             },
             {
