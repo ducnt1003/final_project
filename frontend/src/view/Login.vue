@@ -73,6 +73,7 @@ export default {
     const password = ref('')
     return {
         email,
+        password
     }
   },
   methods: {

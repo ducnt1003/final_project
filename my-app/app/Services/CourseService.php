@@ -89,8 +89,6 @@ class CourseService extends BaseService
     }
 
     public function update($id, $request) {
-
-        $data = [];
         $data = [
             'name' => $request->name,
             'description' => $request->description,
