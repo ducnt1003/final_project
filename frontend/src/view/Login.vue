@@ -67,12 +67,15 @@
 import { ref } from '@vue/reactivity'
 import { login } from "@/services/auth";
 import { setAccessToken } from '@/utils/cookies'
+import { useToast } from "vue-toastification";
 export default {
   setup(){
     const email = ref('')
     const password = ref('')
+    const toast = useToast();
     return {
         email,
+        toast
     }
   },
   methods: {
@@ -83,13 +86,16 @@ export default {
         }
         try {
         const response = await login(data)
-        if (response.success) {
+
+        if (response.success && response.data.user.role_id == 0) {
             // const token = response.data.token
             await setAccessToken(response.data.access_token, {
             expires: new Date(Date.now() + 3600 * 1000),
             path: '/',
           }) 
           this.$router.push('/')
+        } else {
+          this.toast.error("Login Fail");
         }
       } finally {
         this.isSubmiting = false

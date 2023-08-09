@@ -80,6 +80,7 @@ class AuthService extends BaseService
             'user' => $user,
             'token_type' => 'bearer',
             'expires_in' => 60*60,
+            'student' => $user->student ? $user->student : null
         ], __('admin.message.success'));
     }
 }
