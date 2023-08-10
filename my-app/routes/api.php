@@ -66,8 +66,8 @@ Route::prefix('user')->group(function () {
     Route::get('/search-student', [UserController::class, 'searchStudent']);
 
     // Route::post('/edit/{id}', [CourseController::class, 'update']);
-    // // Route::get('/{id}', [CourseController::class, 'getDetail']);
-    // Route::post('/create', [CourseController::class, 'store']);
+    // Route::get('/{id}', [CourseController::class, 'getDetail']);
+    Route::post('/create', [UserController::class, 'store']);
     // Route::delete('/delete/{id}', [CourseController::class, 'destroy']);
 });
 
@@ -78,22 +78,13 @@ Route::prefix('recomend')->group(function () {
     Route::get('/test', [RecomendController::class, 'test']);
     Route::get('/{id}', [RecomendController::class, 'recomend']);
 
-
-
-
-
-    // Route::post('/edit/{id}', [CourseController::class, 'update']);
-    // // Route::get('/{id}', [CourseController::class, 'getDetail']);
-    // Route::post('/create', [CourseController::class, 'store']);
     // Route::delete('/delete/{id}', [CourseController::class, 'destroy']);
 });
 
 Route::prefix('direction')->middleware(['auth'])->group(function () {
     Route::get('/', [DirectionController::class, 'list']);
     Route::post('/select', [DirectionController::class, 'select']);
-    // Route::post('/edit/{id}', [CategoryController::class, 'update']);
-    // // Route::get('/{id}', [CategoryController::class, 'getDetail']);
-    // Route::post('/create', [CategoryController::class, 'store']);
-    // Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
+    Route::post('/create', [DirectionController::class, 'create']);
+    Route::post('/edit/{id}', [DirectionController::class, 'update']);
 });
 

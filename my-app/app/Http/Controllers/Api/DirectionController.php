@@ -22,4 +22,13 @@ class DirectionController extends Controller
     public function select(Request $request) {
         return $this->directionService->select($request);
     }
+
+    public function create(Request $request) {
+        return $this->directionService->create($request);
+    }
+
+    public function update($id, Request $request)
+    {
+        return $this->directionService->update($id, $request);
+    }
 }

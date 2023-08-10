@@ -75,7 +75,8 @@ export default {
     const toast = useToast();
     return {
         email,
-        toast
+        toast,
+        password
     }
   },
   methods: {
