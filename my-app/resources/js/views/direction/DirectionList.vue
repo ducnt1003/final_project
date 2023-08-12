@@ -42,7 +42,7 @@ import { useRoute } from "vue-router";
 import { ref } from "@vue/reactivity";
 import { mapActions } from "vuex";
 import { useToast } from "vue-toastification";
-import { getDirections } from "../../../../../frontend/src/services/direction";
+import { getDirections } from "@/services/direction";
 export default {
     components: {
         ContentCard,
