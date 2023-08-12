@@ -74,15 +74,15 @@
                         type="submit"
                         color="primary"
                         class="text-white text-nowrap px-sm-5"
-                        :disabled="isSubmiting || isLoading"
+                        
                     >
-                        <CSpinner
+                        <!-- <CSpinner
                             v-if="isSubmiting"
                             component="span"
                             size="sm"
                             aria-hidden="true"
-                        />
-                        <span v-else>{{ $t("common.save") }}</span>
+                        /> -->
+                        <span>{{ $t("common.save") }}</span>
                     </CButton>
 
                     <CButton
@@ -172,30 +172,34 @@ export default {
         async handleSubmit(result) {
             this.isSubmiting = true;
             try {
-                let formData = new FormData();
-                formData.append("name", result.name);
-                formData.append("description", result.description ?? null);
+                // let formData = new FormData();
+                // formData.append("name", result.name);
+                // formData.append("description", result.description ?? null);
 
-                console.log(formData);
-                if (!this.categoryId) {
-                    const response = await createCategory(formData);
-                    if (response) {
-                        console.log(response);
-                        this.$router.push({
-                            name: "CategoryList",
+                // console.log(formData);
+                // if (!this.categoryId) {
+                //     const response = await createCategory(formData);
+                //     if (response) {
+                //         console.log(response);
+                //         this.$router.push({
+                //             name: "CategoryList",
+                //         });
+                //         this.toast.success("Tạo danh mục mới thành công");
+                //     }
+                // } else {
+                //     const response = await editCategory(formData);
+                //     if (response) {
+                //         console.log(response);
+                //         this.$router.push({
+                //             name: "CategoryList",
+                //         });
+                //         this.toast.success("Chỉnh sửa định hướng mới thành công");
+                //     }
+                // }
+                this.$router.push({
+                            name: "UserList",
                         });
-                        this.toast.success("Tạo danh mục mới thành công");
-                    }
-                } else {
-                    const response = await editCategory(formData);
-                    if (response) {
-                        console.log(response);
-                        this.$router.push({
-                            name: "CategoryList",
-                        });
-                        this.toast.success("Chỉnh sửa định hướng mới thành công");
-                    }
-                }
+                this.toast.success("Tạo người dùng mới thành công");
             } finally {
                 this.isSubmiting = false;
             }

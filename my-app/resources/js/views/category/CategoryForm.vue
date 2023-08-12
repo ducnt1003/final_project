@@ -146,7 +146,10 @@ export default {
         },
     },
     async created() {
-        await this.handleGetData()
+        if (this.categoryId) {
+            await this.handleGetData()
+        }
+
     },
 };
 </script>

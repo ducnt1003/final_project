@@ -39,8 +39,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # RUN apt-get install -y nodejs
 
 #Config cron
-#RUN touch /var/log/cron.log
-#RUN crontab -l | { cat; echo "* * * * * cd /var/www/html/my-app && php artisan schedule:run >> /var/log/cron.log"; } | crontab -
+RUN touch /var/log/cron.log
+RUN crontab -l | { cat; echo "* * * * * cd /var/www/html/final_project/my-app && php artisan schedule:run >> /var/log/cron.log"; } | crontab -
 
 
 # Copy existing application directory contents to the working directory

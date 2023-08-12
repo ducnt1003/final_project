@@ -82,7 +82,9 @@ class RecomendService extends BaseService
             $data = [];
         } else {
             $data = $datas[$id - 1];
+
         }
+        Log::info(1);
         $enrolled = Enroll::join('courses', 'enrolls.course_id', '=', 'courses.id')
             ->where('student_id', $id)
             ->pluck("courses.id")
