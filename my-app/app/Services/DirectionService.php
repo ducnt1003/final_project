@@ -107,21 +107,21 @@ class DirectionService extends BaseService
         $data = [
             'name' => $request->name,
             'description' => $request->description,
-            'expert_id' => $request->expert_id,
         ];
 
         try {
             $direction = $this->directionRepo->update($id, $data);
             $rules = $request->rules ? json_decode('['.$request->rules.']', TRUE) : [];
-            $rule_old = DirectionRule::where('course_id', $id)->get()->toArray();
+            $rule_old = DirectionRule::where('direction_id', $id)->get()->toArray();
             $rules_old = array_map(function ($e) {
                 return $e['id'];
             }, $rule_old);
             $data_rules = [];
+
             foreach ($rules as $rule) {
                 if (isset($rule['id'])) {
                     $data_rule = [
-                        'direction_id' => $direction->id,
+                        'direction_id' => $id,
                         'category_id' => $rule['category'],
                         'level' => $rule['level']
                     ];
@@ -129,7 +129,7 @@ class DirectionService extends BaseService
                     $data_rules[] = $rule['id'];
                 } else {
                     $data_rule = [
-                        'direction_id' => $direction->id,
+                        'direction_id' => $id,
                         'category_id' => $rule['category'],
                         'level' => $rule['level']
                     ];

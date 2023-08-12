@@ -204,31 +204,30 @@ export default {
         },
         async handleSubmit(result) {
             this.isSubmiting = true;
+            console.log(result)
             try {
                 let formData = new FormData();
                 formData.append("name", result.name);
-                formData.append("description", result.description ?? null);
-                formData.append("photo", result.image ?? null);
+                formData.append("description", result.description ?? '');
                 formData.append(
                     "rules",
                     result.parts.map((e) => {
                         return JSON.stringify(e);
                     }) ?? null
                 );
-                console.log(formData);
                 if (!this.directionId) {
                     const response = await createDirection(formData);
                     if (response) {
-                        console.log(response);
+                        // console.log(response);
                         this.$router.push({
                             name: "DirectionList",
                         });
                         this.toast.success("Tạo định hướng mới thành công");
                     }
                 } else {
-                    const response = await editDirection(formData);
+                    const response = await editDirection(this.directionId, formData);
                     if (response) {
-                        console.log(response);
+                        // console.log(response);
                         this.$router.push({
                             name: "DirectionList",
                         });
