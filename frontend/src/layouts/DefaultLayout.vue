@@ -13,6 +13,9 @@
 <script >
 import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
+import { me } from "../services/auth";
+import store from "@/store";
+import { getAccessToken } from '@/utils/cookies'
 
 export default {
   name: 'DefaultLayout',
@@ -20,6 +23,20 @@ export default {
     Footer,
     Header,
   },
+  
+  async beforeRouteEnter(to, from, next) {
+      const token = await getAccessToken();
+      if (!!token) {
+        const response = await me();
+        store.dispatch("setUser", response.data);
+        // if (response.data.user.role_id != 0) {
+        //   return next({ name: "Login" });
+        // }
+      } 
+      return next();
+  }
 };
+
+
 </script>
 

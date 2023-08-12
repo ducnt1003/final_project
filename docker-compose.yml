@@ -35,7 +35,7 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - 8000:80
+      - 8083:80
     volumes:
       - ./my-app/:/var/www/html/my-app
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/

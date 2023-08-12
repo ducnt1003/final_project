@@ -38,3 +38,10 @@ export function isEnroll(data) {
     })
 }
 
+export function getCategories() {
+    return request({
+        url: "/category",
+        method: "get",
+    });
+}
+

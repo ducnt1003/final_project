@@ -17,7 +17,7 @@
                   <h1
                     class="display-3 text-white text-uppercase animated slideInDown"
                   >
-                    Vui lòng chọn những nội dung quan tâm
+                    Vui lòng chọn những định hướng quan tâm
                   </h1>
                 </div>
               </div>
@@ -29,13 +29,23 @@
     <div class="container-xxl mt-5 mb-2">
       <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 class="section-title bg-white text-center text-primary px-3">
-          Các nội dung của hệ thống
+          Các định hướng của hệ thống
         </h6>
       </div>
       <div class="container mt-5">
         <div class="row g-3 mb-4">
           <div v-for="item in data" class="col-lg-4 mb-2 text-center">
             <button
+              v-if="select_id.includes(item.id)"
+              type="button"
+              @click="activeLink($event, item)"
+              class="btn btn-secondary"
+              style="width: 90%"
+            >
+              {{ item.name }}
+            </button>
+            <button
+              v-else
               type="button"
               @click="activeLink($event, item)"
               class="btn btn-outline-secondary"
@@ -60,7 +70,7 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-import { getDirections, selectDirection } from "../services/direction";
+import { getDirections, selectDirection, selectedDirection  } from "../services/direction";
 import { getAccessToken } from '@/utils/cookies'
 export default {
   name: "SelectTag",
@@ -68,25 +78,30 @@ export default {
   setup() {
     const data = ref([]);
     const select = ref([]);
+    const select_id = ref([]);
 
     return {
       data,
-      select
+      select,
+      select_id
     };
   },
   methods: {
     async getData() {
-      try {
-        
+      try {  
         const response = await getDirections()
-        this.data = response.data
+        const selected = await selectedDirection()
+        this.data = response.data.data
+        this.select = selected.data.data
+        this.select_id = this.select.map((e) => e.id)
+        console.log(this.select)
+        
+        // this
       } finally {
         this.isSubmiting = false
       }
-      
     },
     activeLink(event, item) {
-      
       if (event.target.className == "btn btn-outline-secondary") {
         event.target.className = "btn btn-secondary";
         this.select.push(item)
@@ -97,7 +112,7 @@ export default {
       
     },
     async submit() {
-      // console.log()
+      // console.log(this.select)
       const data = {
         directions : this.select.map((e) => e.id)
       }
@@ -117,7 +132,6 @@ export default {
   },
   async beforeRouteEnter(to, from, next) {
       const token = await getAccessToken();
-
       if (!token) {
         return next({ name: "Login" });
       } else {

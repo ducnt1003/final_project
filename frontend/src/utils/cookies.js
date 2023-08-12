@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie'
 
-const accessToken = 'accessToken'
+const accessToken = 'accessToken_user'
 
 export function getAccessToken() {
   return new Cookies().get(accessToken)

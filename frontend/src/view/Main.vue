@@ -66,40 +66,64 @@
           <div class="col-lg-7 col-md-6">
             <div class="row g-3">
               <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
-                <a class="position-relative d-block overflow-hidden" href="">
+                <router-link
+                  class="position-relative d-block overflow-hidden"
+                  :to="{
+                    name: 'Course-List',
+                    query: { category: categories[0]?.id },
+                  }"
+                >
                   <img class="img-fluid" src="/img/cat-1.jpg" alt="" />
                   <div
                     class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3"
                     style="margin: 1px"
                   >
-                    <h5 class="m-0">Khoa học máy tính</h5>
-                    <small class="text-primary">78 khóa</small>
+                    <h5 class="m-0">{{ categories[0]?.name }}</h5>
+                    <small class="text-primary"
+                      >{{ categories[0]?.number_courses }} khóa</small
+                    >
                   </div>
-                </a>
+                </router-link>
               </div>
               <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
-                <a class="position-relative d-block overflow-hidden" href="">
+                <router-link
+                  class="position-relative d-block overflow-hidden"
+                  :to="{
+                    name: 'Course-List',
+                    query: { category: categories[1]?.id },
+                  }"
+                >
                   <img class="img-fluid" src="/img/cat-2.jpg" alt="" />
                   <div
                     class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3"
                     style="margin: 1px"
                   >
-                    <h5 class="m-0">Mạng và truyền thông</h5>
-                    <small class="text-primary">39 khóa</small>
+                    <h5 class="m-0">{{ categories[1]?.name }}</h5>
+                    <small class="text-primary"
+                      >{{ categories[1]?.number_courses }} khóa</small
+                    >
                   </div>
-                </a>
+                </router-link>
               </div>
               <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
-                <a class="position-relative d-block overflow-hidden" href="">
+                <router-link
+                  class="position-relative d-block overflow-hidden"
+                  :to="{
+                    name: 'Course-List',
+                    query: { category: categories[2]?.id },
+                  }"
+                >
                   <img class="img-fluid" src="/img/cat-3.jpg" alt="" />
                   <div
                     class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3"
                     style="margin: 1px"
                   >
-                    <h5 class="m-0">Ngôn ngữ</h5>
-                    <small class="text-primary">67 khóa</small>
+                    <h5 class="m-0">{{ categories[2]?.name }}</h5>
+                    <small class="text-primary"
+                      >{{ categories[2]?.number_courses }} khóa</small
+                    >
                   </div>
-                </a>
+                </router-link>
               </div>
             </div>
           </div>
@@ -108,7 +132,13 @@
             data-wow-delay="0.7s"
             style="min-height: 350px"
           >
-            <a class="position-relative d-block h-100 overflow-hidden" href="">
+            <router-link
+              class="position-relative d-block h-100 overflow-hidden"
+              :to="{
+                name: 'Course-List',
+                query: { category: categories[3]?.id },
+              }"
+            >
               <img
                 class="img-fluid position-absolute w-100 h-100"
                 src="/img/cat-4.jpg"
@@ -119,10 +149,12 @@
                 class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3"
                 style="margin: 1px"
               >
-                <h5 class="m-0">Kĩ năng mềm</h5>
-                <small class="text-primary">49 khóa</small>
+                <h5 class="m-0">{{ categories[3]?.name }}</h5>
+                <small class="text-primary"
+                  >{{ categories[3]?.number_courses }} khóa</small
+                >
               </div>
-            </a>
+            </router-link>
           </div>
         </div>
       </div>
@@ -146,7 +178,7 @@
           >
             <div class="course-item bg-light">
               <div class="position-relative overflow-hidden">
-                <img class="img-fluid" :src="course.image" alt="" />
+                <img :src="course.image" alt="" width="400" height="250" />
                 <div
                   class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
                 >
@@ -207,7 +239,7 @@
           >
             <div class="course-item bg-light">
               <div class="position-relative overflow-hidden">
-                <img class="img-fluid" :src="course.image" alt="" />
+                <img width="400" height="250" :src="course.image" alt="" />
                 <div
                   class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
                 >
@@ -520,7 +552,8 @@
 <script>
 import { ref } from "@vue/reactivity";
 import { getAccessToken } from "@/utils/cookies";
-import { getCourses, recomend } from "../services/course";
+import { getCourses, recomend, getCategories } from "../services/course";
+import { useStore } from "vuex";
 
 export default {
   name: "Main",
@@ -528,11 +561,15 @@ export default {
     const courses = ref([]);
     const recomends = ref([]);
     const token = getAccessToken();
+    const student = useStore().state.User.student;
+    const categories = ref([]);
 
     return {
       courses,
       recomends,
       token,
+      student,
+      categories,
     };
   },
   methods: {
@@ -542,44 +579,30 @@ export default {
 
         this.courses = response.data.data.slice(0, 3);
         if (!!this.token) {
-          // const recomends = await recomend(1)
-          this.recomends = response.data.data.slice(4, 7);
+          const recomends = await recomend(this.student.id);
+          // this.recomends = response.data.data.slice(4, 7);
+          this.recomends = recomends.data.map((e) => {
+            return e.course;
+          });
+          this.recomends = this.recomends.slice(0, 3);
         }
       } finally {
       }
-      // this.courses = [
-      //   {
-      //     id: 1,
-      //     name: "Thiết kế giao diện người dùng",
-      //     teacher: "Thang Nguyen",
-      //     number_parts: 15,
-      //     image: "img/thumbnail_placeholder.png",
-      //     price: 1000000,
-      //     number_enrolls: 120,
-      //   },
-      //   {
-      //     id: 2,
-      //     name: "Kiến trúc phần mềm",
-      //     teacher: "Trung Nguyen",
-      //     number_parts: 20,
-      //     image: "img/thumbnail_placeholder.png",
-      //     price: 1000000,
-      //     number_enrolls: 120,
-      //   },
-      //   {
-      //     id: 3,
-      //     name: "Tư duy toán học",
-      //     teacher: "Dat Nguyen",
-      //     number_parts: 12,
-      //     image: "img/thumbnail_placeholder.png",
-      //     price: 1000000,
-      //     number_enrolls: 120,
-      //   }
-      // ];
+    },
+    async getCate() {
+      try {
+        const response = await getCategories({ itemsPerPage: 100 });
+        // this.courses = response.data.data;
+        if (response) {
+          this.categories = response.data.data;
+        }
+      } finally {
+      }
     },
   },
   async created() {
     await this.getData();
+    await this.getCate();
   },
 };
 </script>

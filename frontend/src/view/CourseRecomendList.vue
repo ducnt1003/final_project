@@ -35,81 +35,14 @@
           <h6 class="section-title bg-white text-center text-primary px-3">
             Khóa học
           </h6>
-          <h1 class="mb-5">Danh sách khóa học</h1>
-        </div>
-        <div class="row justify-content-center" style="margin-bottom: 20px">
-          <div class="col-4 form-group">
-            <input
-              v-model="search"
-              id="name"
-              type="text"
-              class="form-control"
-              name="name"
-              placeholder="Khóa học"
-            />
-          </div>
-
-          <div class="col-3 form-group">
-            <input
-              v-model="teacher"
-              id="teacher"
-              type="text"
-              class="form-control"
-              name="teacher"
-              placeholder="Giảng viên"
-            />
-          </div>
-
-          <div class="col-3 form-group">
-            <select v-model="category_id" class="form-control">
-              <option value="" selected>Tất cả</option>
-              <option
-                v-for="option in categoriesOptions"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.name }}
-              </option>
-            </select>
-            <!-- <select
-              v-model="category"
-              class="form-control"
-            >
-              <option value="" selected>Tất cả</option>
-              <option
-                v-for="(item, index) in categoriesOptions"
-                :key="item.id"
-                :value="item.id"
-              >
-                {{ item.name }}
-              </option>
-            </select> -->
-          </div>
-          <div
-            class="col-2 text-align-right"
-            style="
-              display: flex;
-              justify-content: flex-center;
-              padding-right: 15px;
-            "
-          >
-            <button
-              style="width: 100%"
-              padding-right="0"
-              type="submit"
-              class="btn btn-primary"
-              @click="searchCourses"
-            >
-              Tìm kiếm
-            </button>
-          </div>
+          <h1 class="mb-5">Danh sách khóa học gợi ý</h1>
         </div>
       </div>
       <div v-if="isLoading" class="container">
         <Loading />
       </div>
       <div v-if="!isLoading" class="container">
-        <div class="row g-4 ">
+        <div class="row g-4 justify-content-center">
           <div
             v-for="(course, index) in courses"
             class="col-lg-4 col-md-6 wow fadeInUp"
@@ -172,7 +105,7 @@
           </div>
         </div>
       </div>
-      <div class="container">
+      <!-- <div class="container">
         <div class="row justify-content-center" style="margin-top: 20px">
           <div
             class="col-4 justify-content-center"
@@ -185,16 +118,17 @@
             />
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- Detail End -->
   </div>
 </template>
 <script>
 import { ref } from "@vue/reactivity";
-import { getCourses, getCategories } from "../services/course";
+import { getCourses, recomend } from "../services/course";
 import Pagination from "@/components/Pagination.vue";
-import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+
 export default {
   components: {
     Pagination,
@@ -206,90 +140,55 @@ export default {
     const currentPage = ref(1);
     const queries = ref({});
     const isLoading = ref();
-    const categoriesOptions = ref([]);
-    const category_id = ref(0);
-    const teacher = ref();
-    const search = ref();
+    const student = useStore().state.User.student;
     return {
       courses,
       param,
       pages,
       currentPage,
       isLoading,
-      queries,
-      categoriesOptions,
-      category_id,
-      teacher,
-      search,
+      student,
     };
   },
   // watch: {
   //   queries(queries) {
-  //     this.setQueries(queries)
+  //     this.setQueriesData(queries)
   //   },
   // },
   methods: {
     async getData() {
       this.isLoading = true;
       try {
-        const response = await getCourses(this.queries);
-        this.courses = response.data.data;
-        this.pages = response.data.pagination.total_pages;
-        this.currentPage = parseInt(this.queries?.["page"]) || 1;
+        const recomends = await recomend(this.student.id);
+        // this.recomends = response.data.data.slice(4, 7);
+        this.courses = recomends.data.map((e) => {
+          return e.course;
+        });
+        this.courses = this.courses.slice(0, 9);
       } finally {
         this.isLoading = false;
       }
     },
-    async getCate() {
-      try {
-        const response = await getCategories({itemsPerPage: 100});
-        // this.courses = response.data.data;
-        if (response) {
-          this.categoriesOptions = response.data.data.map((e) => {
-            return {
-              value: e.id,
-              name: e.name,
-            };
-          });
-        }
-      } finally {
-      }
-    },
-    searchCourses() {
-      this.$router.push({
-        query: {
-          teacher: this.teacher,
-          search: this.search,
-          category: this.category_id,
-        },
-      });
-    },
-    setQueries() {
-      this.queries = this.$route.query;
-    },
-    handlePageChange(number) {
-      this.$router.push({ query: { page: number } });
-    },
+    // setQueries() {
+    //   this.queries = this.$route.query;
+    // },
+    // handlePageChange(number) {
+    //   this.$router.push({ query: { page: number } });
+    // },
   },
   async created() {
-    this.queries = this.$route.query
-    if (this.queries) {
-      this.category_id = this.queries.category
-    }
     await this.getData();
-    await this.getCate();
-    // console.log(this.$route.query)
-    
-    this.$watch(
-      () => this.$route.query,
-      async () => {
-        if (this.$route.name === "Course-List") {
-          this.setQueries();
-          await this.getData();
-          // this.isLoading = false;
-        }
-      }
-    );
+
+    // this.$watch(
+    //   () => this.$route.query,
+    //   async () => {
+    //     if (this.$route.name === "Course-List") {
+    //       this.setQueries();
+    //       await this.getData();
+    //       // this.isLoading = false;
+    //     }
+    //   }
+    // );
   },
 };
 </script>

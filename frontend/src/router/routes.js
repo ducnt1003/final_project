@@ -36,6 +36,12 @@ const routes = [
         name: 'Course-List',
         component: () => import('@/view/CourseList.vue'),
       },
+      {
+        /** Full page layout routes */
+        path: '/recomend-courses',
+        name: 'Course-Recomend-List',
+        component: () => import('@/view/CourseRecomendList.vue'),
+      },
     ]
   },
   {

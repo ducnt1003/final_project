@@ -101,42 +101,8 @@ export default {
         this.course = response.data;
       } finally {
       }
-      this.parts = [
-        {
-          name: "Tổng quan",
-          documents: [
-            {
-              id: 1,
-              type: "mp4",
-              path: "/intro.mp4",
-              name: "Mo dau",
-            },
-            {
-              id: 2,
-              type: "pdf",
-              path: "/ui-ux1.pdf",
-              name: "Gioi thieu",
-            },
-          ],
-        },
-        {
-          name: "Bài học đầu",
-          documents: [
-            {
-              id: 3,
-              type: "mp4",
-              path: "/intro.mp4",
-              name: "Mo dau",
-            },
-            {
-              id: 4,
-              type: "pdf",
-              path: "/ui-ux1.pdf",
-              name: "Gioi thieu",
-            },
-          ],
-        },
-      ];
+      this.parts = this.course.parts
+      
     },
   },
   async created() {

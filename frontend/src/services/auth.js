@@ -15,3 +15,17 @@ export function login(data) {
     data: data,
   })
 }
+
+export function me() {
+  return request({
+    url: '/auth/me',
+    method: 'post',
+  })
+}
+
+export function log_out() {
+  return request({
+    url: '/auth/logout',
+    method: 'post',
+  })
+}

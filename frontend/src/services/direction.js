@@ -15,3 +15,10 @@ export function selectDirection(data) {
       data: data,
     })
   }
+
+  export function selectedDirection() {
+    return request({
+      url: '/direction/selected',
+      method: 'post',
+    })
+  }

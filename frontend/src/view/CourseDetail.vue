@@ -112,7 +112,7 @@
               </div>
               <div class="d-flex justify-content-between border-bottom px-4">
                 <h6 class="text-white my-3">Độ khó</h6>
-                <h6 class="text-white my-3">{{ course.level }}</h6>
+                <h6 class="text-white my-3">{{ course.level_name }}</h6>
               </div>
               <div class="d-flex justify-content-between px-4">
                 <h6 class="text-white my-3">Ngôn ngữ</h6>
@@ -134,7 +134,7 @@
             </div>
 
             <div class="mb-5">
-              <h2 class="mb-4">Khóa học tương tự</h2>
+              <h2 class="mb-4">Có thể bạn sẽ thích</h2>
               <a
                 v-for="course in recomend"
                 class="d-flex align-items-center text-decoration-none mb-4"
@@ -220,42 +220,8 @@ export default {
           number_enrolls: 120,
         },
       ];
-      this.parts = [
-        {
-          name: "Tổng quan",
-          documents: [
-            {
-              id: 1,
-              type: "mp4",
-              path: "/intro.mp4",
-              name: "Mở đầu",
-            },
-            {
-              id: 2,
-              type: "pdf",
-              path: "/ui-ux1.pdf",
-              name: "Giới thiệu",
-            },
-          ],
-        },
-        {
-          name: "Bài học đầu",
-          documents: [
-            {
-              id: 3,
-              type: "mp4",
-              path: "/intro.mp4",
-              name: "Lý thuyết",
-            },
-            {
-              id: 4,
-              type: "pdf",
-              path: "/ui-ux1.pdf",
-              name: "Bài tập",
-            },
-          ],
-        },
-      ];
+      this.parts = this.course.parts
+      
     },
     async getDocument() {
       const token = getAccessToken();

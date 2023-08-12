@@ -6,8 +6,8 @@
     class="min-vh-100 d-flex px-4 py-5 px-md-5 text-center text-lg-start"
     style="background-color: hsl(0, 0%, 96%)"
   >
-    <div class="container aligns-items-center">
-      <div class="row gx-lg-5 align-items-center justify-items-center">
+    <div class="container aligns-items-center" style="margin-top:50px;">
+      <div class="row gx-lg-5 justify-items-center align-items-center " >
         <div class="col-lg-6 mb-5 mb-lg-0">
           <h1 class="my-5 display-3 fw-bold ls-tight">
             HỌC VIỆN ONLINE <br />
