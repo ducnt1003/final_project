@@ -15,16 +15,19 @@ use Illuminate\Support\Facades\Log;
 
 class RecomendService extends BaseService
 {
+    public function getConfig() {
+        $config = DB::table('configs')->first();
+        return $config;
+    }
     public function recomend($id)
     {
         $config = DB::table('configs')->first();
         $k = $config->value;
-        $directions = Direction::join('student_direction', 'directions.id', '=', 'student_direction.direction_id')
+        $directions = Direction::select('directions.*')->join('student_direction', 'directions.id', '=', 'student_direction.direction_id')
             ->where('student_direction.student_id', '=', $id)->get();
         $courses = Course::get()->toArray();
         $results = [];
-
-        if (count($directions)>0) {
+        if (count($directions) > 0) {
             foreach ($directions as $direction) {
                 $rows = [];
                 $rules = $direction->Rule->toArray();
@@ -56,6 +59,7 @@ class RecomendService extends BaseService
             //         return 0;
             //     return $element / $magnitude;
             // }, $results);
+
             $min = min($results);
             $max = max($results);
             $results = array_map(function ($element) use ($min, $max) {
@@ -73,7 +77,12 @@ class RecomendService extends BaseService
         while (($data = fgetcsv($file, 0, ",")) !== FALSE) {
             $datas[] = $data;
         }
-        $data = $datas[$id - 1];
+
+        if (count($datas) + 1 <= (int)$id) {
+            $data = [];
+        } else {
+            $data = $datas[$id - 1];
+        }
         $enrolled = Enroll::join('courses', 'enrolls.course_id', '=', 'courses.id')
             ->where('student_id', $id)
             ->pluck("courses.id")
@@ -82,7 +91,12 @@ class RecomendService extends BaseService
         for ($i = 0; $i < count($results); $i++) {
             if (in_array(($i + 1), $enrolled)) {
                 $results[$i] = 0;
-            } else $results[$i] = $k* $results[$i] + (1 - $k) * $data[$i];
+            } else if (count($data) > 0) {
+                $results[$i] = (1-$k) * $results[$i] + $k * $data[$i];
+            } else {
+                $results[$i] = (1-$k) * $results[$i];
+            }
+
         }
         arsort($results);
 
@@ -91,14 +105,15 @@ class RecomendService extends BaseService
             return [
                 'id' => $key + 1,
                 'course' => new CourseResource(Course::find($key + 1)),
-                'value' => number_format($value,3)
+                'value' => number_format($value, 3)
             ];
         }, array_keys($newArray), array_values($newArray));
         return $this->sendResponse($array, __('admin.message.success'));
         // return $array;
     }
 
-    public function changeConfig($request) {
+    public function changeConfig($request)
+    {
         $config = $request->config;
         $old_config = DB::table('configs')->first();
         DB::table('configs')->where('id', $old_config->id)->delete();

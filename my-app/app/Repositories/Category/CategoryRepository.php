@@ -15,9 +15,9 @@ class CategoryRepository extends AbstractRepository
         return Category::class;
     }
 
-    public function getList($search) {
-        if (!is_null($search))
-            return $this->model->where('name', 'LIKE', "%$search%")->get();
-        return $this->model->get();
+    public function getList($search, $per_page) {
+        if ($search)
+            return $this->model->where('name', 'LIKE', "%$search%")->paginate($per_page);
+        return $this->model->paginate($per_page);
     }
 }

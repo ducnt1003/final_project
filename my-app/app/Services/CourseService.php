@@ -9,6 +9,7 @@ use App\Repositories\Course\CourseRepository;
 use Countable;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -30,10 +31,14 @@ class CourseService extends BaseService
     }
 
     public function getList($request) {
+        $const_per_page = 9;
+        if (Auth::user() && Auth::user()->role_id != 0) {
+            $const_per_page = 10;
+        }
         $search = $request->search ? $request->search : null;
-        $cate = $request->category_id ? $request->category_id : null;
+        $cate = $request->category ? $request->category : null;
         $teacher = $request->teacher ? $request->teacher : null;
-        $per_page = $request->per_page ? $request->per_page : 9;
+        $per_page = $request->itemsPerPage ? $request->itemsPerPage : $const_per_page;
         $courses = $this->courseRepo->getList($search, $cate, $teacher, $per_page);
         return $this->sendResponse(new CourseCollection($courses), __('admin.message.success'));
     }
@@ -105,6 +110,10 @@ class CourseService extends BaseService
             $course = $this->courseRepo->update($id, $data);
             $index = 0;
             $parts = $request->parts ? json_decode('['.$request->parts.']', TRUE) : [];
+            $cours_part_old = CoursePart::where('course_id', $id)->get()->toArray();
+            $cours_parts_old = array_map(function ($e) {
+                return $e['id'];
+            }, $cours_part_old);
             $course_parts = [];
             foreach($parts as $part) {
                 $index ++;
@@ -125,10 +134,11 @@ class CourseService extends BaseService
                         'description' => $part['description'],
                     ];
                     $course_part = CoursePart::create($data_part);
-                    $course_parts[] = $course_part->id;
+                    // $course_parts[] = $course_part->id;
                 }
             }
-            CoursePart::whereNotIn('id', $course_parts)->delete();
+            $course_delete = array_diff($cours_parts_old, $course_parts);
+            CoursePart::whereIn('id', $course_delete)->delete();
         }catch (Exception $e) {
             Log::error($e);
             return $this->sendError(null, __('admin.message.error'));

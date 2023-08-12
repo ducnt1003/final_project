@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-
+use App\Http\Resources\UserCollection;
 use App\Repositories\Course\CourseRepository;
 use App\Repositories\User\UserRepository;
 use Exception;
@@ -24,5 +24,18 @@ class UserService extends BaseService
         $key = $request->search ?? '';
         $users = $this->userRepo->searchStudent($key);
         return $this->sendResponse($users, __('admin.message.success'));
+    }
+
+    public function list($request) {
+        $search = $request->search ? $request->search : null;
+        $mail = $request->mail ? $request->mail : null;
+        $per_page = $request->itemsPerPage ? $request->itemsPerPage : 10;
+        Log::info([$search, $mail]);
+        $users = $this->userRepo->getList($search, $mail, $per_page);
+        return $this->sendResponse(new UserCollection($users), __('admin.message.success'));
+    }
+
+    public function store($request) {
+        
     }
 }

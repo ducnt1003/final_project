@@ -38,3 +38,12 @@ export function deleteCourse(id) {
         method: "delete",
     });
 }
+
+export function uploadDocument(data) {
+    return request({
+        headers: { "content-type": "multipart/form-data" },
+        url: "/upload-document/" + id,
+        method: "post",
+        data: data,
+    });
+}

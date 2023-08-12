@@ -27,6 +27,10 @@ class CategoryController extends Controller
         return $this->categoryService->getList($request);
     }
 
+    public function getDetail($id) {
+        return $this->categoryService->getDetail($id);
+    }
+
     /**
      * @param $id
      * @param Request $request

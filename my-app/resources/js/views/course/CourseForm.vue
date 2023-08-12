@@ -43,7 +43,6 @@
                 type="CFormInput"
                 name="price"
                 :label="$t('devices.common.price')"
-                required
                 inputType="number"
                 min="0"
                 :value="data?.price"
@@ -81,14 +80,17 @@
                     <CCardHeader class="text-end">
                         <div class="align-items-center">
                             <!-- <h4 class="m-0 flex-grow-1">
-                                    {{ part.label }}
-                                </h4> -->
+                                        {{ part.label }}
+                                    </h4> -->
                             <CCloseButton @click="removePart(index)" />
                         </div>
                     </CCardHeader>
                     <CCardBody>
-                        <!-- <HiddenField :name="`parts[${index}].id`" /> -->
-                        <Field as="hidden" :name="`parts[${index}].id`" :value="getPartInfo(index).id" />
+                        <Field
+                            as="hidden"
+                            :name="`parts[${index}].id`"
+                            :value="getPartInfo(index).id"
+                        />
                         <FormField
                             type="CFormInput"
                             :name="`parts[${index}].name`"
@@ -104,21 +106,8 @@
                             alignLabel="top"
                             textareaRows="3"
                             :label="$t('common.description')"
-                            :error="
-                                errors?.[`parts[${index}].description`]
-                            "
+                            :error="errors?.[`parts[${index}].description`]"
                         />
-                        <div
-                            class="d-grid d-sm-flex gap-2 gap-sm-0 align-items-sm-center justify-content-sm-end"
-                        >
-                            <CButton
-                                v-if="part.id"
-                                color="info"
-                                class="ms-2 text-white"
-                            >
-                                Chỉnh sửa tài liệu
-                            </CButton>
-                        </div>
                     </CCardBody>
                 </CCard>
             </template>
@@ -160,7 +149,7 @@
                         @click="
                             () =>
                                 $router.push({
-                                    name: 'DeviceList',
+                                    name: 'CourseList',
                                 })
                         "
                         color="light"
@@ -195,7 +184,7 @@ export default {
         FormField,
         Form,
         HiddenField,
-        Field
+        Field,
     },
     setup() {
         const courseId = useRoute().params.courseId;
@@ -212,6 +201,7 @@ export default {
         const data = ref({});
         const toast = useToast();
         const image_url = ref("");
+        const schema = ref({});
 
         return {
             courseId,
@@ -223,6 +213,7 @@ export default {
             data,
             toast,
             image_url,
+            schema,
         };
     },
     computed: {
@@ -231,6 +222,16 @@ export default {
         },
     },
     methods: {
+        setSchema() {
+            this.schema = yup.object({
+                name: yup
+                    .string()
+
+                    .required(this.$t("validate.common.required")),
+                level: yup.string().required(this.$t("validate.common.required")),
+                category: yup.string().required(this.$t("validate.common.required")),
+            });
+        },
         async getCourseInfo(courseId) {
             this.isLoading = true;
             try {
@@ -246,9 +247,9 @@ export default {
         async handleGetData() {
             this.isLoading = true;
             try {
-                const response = await getCategories();
+                const response = await getCategories({ itemsPerPage: 100 });
                 if (response) {
-                    this.categoryOptions = response.data.map((e) => {
+                    this.categoryOptions = response.data.data.map((e) => {
                         return {
                             value: e.id,
                             name: e.name,
@@ -267,32 +268,43 @@ export default {
                 formData.append("name", result.name);
                 formData.append("category", result.category);
                 formData.append("level", result.level);
-                formData.append("price", result.price);
+                formData.append("price", result.price ? result.price : 0);
                 formData.append("teacher_id", 2);
-                formData.append("description", result.description ?? null);
-                formData.append("photo", result.image ?? null);
+                formData.append(
+                    "description",
+                    result.description ? result.description : null
+                );
+                formData.append("photo", result.image ? result.image : null);
                 if (result.parts) {
                     formData.append(
-                    "parts",
-                    result.parts.map((e) => {
-                        return JSON.stringify(e);
-                    }) ?? null
-                );
+                        "parts",
+                        result.parts.map((e) => {
+                            return JSON.stringify(e);
+                        })
+                            ? result.parts.map((e) => {
+                                  return JSON.stringify(e);
+                              })
+                            : null
+                    );
                 }
-
-
                 if (!this.courseId) {
                     const response = await createCourse(formData);
                     if (response) {
-                        console.log(response.data.id)
+                        console.log(response.data.id);
                         await this.getCourseInfo(response.data.id);
-                        this.$router.replace({name: "CourseEdit", params:{courseId: response.data.id}})
+                        this.$router.replace({
+                            name: "CourseDetail",
+                            params: { courseId: response.data.id },
+                        });
                         this.toast.success("Tạo khóa học mới thành công");
                     }
                 } else {
                     const response = await editCourse(this.courseId, formData);
 
-                    this.$router.replace({name: "CourseEdit", params:{courseId: this.courseId}})
+                    this.$router.replace({
+                        name: "CourseDetail",
+                        params: { courseId: this.courseId },
+                    });
                     await this.getCourseInfo(this.courseId);
                     this.toast.success("Chỉnh sửa khóa học mới thành công");
                 }
@@ -314,6 +326,7 @@ export default {
         },
     },
     async created() {
+        this.setSchema()
         await this.handleGetData();
         if (this.courseId) {
             await this.getCourseInfo(this.courseId);

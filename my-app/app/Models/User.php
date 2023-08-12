@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -53,10 +54,18 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function getRole()
+    // public function getRole()
+    // {
+    //     $roles = ['student', 'teacher', 'admin', 'expert'];
+    //     return $roles[$this->role_id];
+    // }
+
+    protected function role(): Attribute
     {
-        $roles = ['student', 'teacher', 'admin'];
-        return $roles[$this->role_id];
+        $roles = ['student', 'teacher', 'admin', 'expert'];
+        return Attribute::make(
+            get: fn () => $roles[$this->role_id],
+        );
     }
 
     public function teacher()

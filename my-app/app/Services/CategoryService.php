@@ -2,8 +2,12 @@
 
 namespace App\Services;
 
+use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use App\Repositories\Category\CategoryRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class CategoryService extends BaseService
 {
@@ -19,9 +23,16 @@ class CategoryService extends BaseService
     }
 
     public function getList($request) {
-        $search = $request->search ?? null;
-        $categories = $this->categoryRepo->getList($search);
-        return $this->sendResponse($categories, __('admin.message.success'));
+        $search = $request->search ? $request->search : null;
+        Log::info($request);
+        $per_page = $request->itemsPerPage ? $request->itemsPerPage : 10;
+        $categories = $this->categoryRepo->getList($search, $per_page);
+        return $this->sendResponse(new CategoryCollection($categories), __('admin.message.success'));
+    }
+
+    public function getDetail($id) {
+        $category = Category::find($id);
+        return $this->sendResponse(new CategoryResource($category), __('admin.message.success'));
     }
 
     public function create($request) {
@@ -44,7 +55,7 @@ class CategoryService extends BaseService
         if ($request->name) $data['name'] = $request->name;
         if ($request->description) $data['description'] = $request->description;
         if ($request->photo) $data['photo'] = $request->photo;
-        
+
         $category = $this->categoryRepo->update($id, $data);
         if (!$category) {
             return $this->sendError(null, __('admin.message.error'));

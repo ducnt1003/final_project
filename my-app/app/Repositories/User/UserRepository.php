@@ -29,4 +29,15 @@ class UserRepository extends AbstractRepository
         return $results;
     }
 
+    public function getList($search, $mail, $per_page) {
+        $results = $this->model->select('users.*');
+        if ($search) {
+            $results->where('users.name', 'like', "%$search%");
+        }
+        if ($mail) {
+            $results->where('users.email', 'like', "%$mail%");
+        }
+        return $results->paginate($per_page);
+    }
+
 }

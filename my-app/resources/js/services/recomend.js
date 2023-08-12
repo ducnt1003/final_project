@@ -14,3 +14,10 @@ export function changeConfig(data) {
       data: data,
     });
 }
+
+export function getConfig() {
+    return request({
+      url: "/recomend/get-config",
+      method: "post",
+    });
+}

@@ -65,7 +65,7 @@ export default {
 
                 const user_role = response.data.user.role_id  ;
                 if (user_role == 0) {
-                    // return next({ name: 'Error', params: { pathMatch: 403 } });
+                    return next({ name: "Login" });
                 }
             }
             return next();

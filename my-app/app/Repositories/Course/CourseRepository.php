@@ -18,7 +18,7 @@ class CourseRepository extends AbstractRepository
     public function getList($search,$cate, $teacher, $per_page) {
         // if (!is_null($search))
             // return $this->model->where('name', 'LIKE', "%$search%")->get();
-        $result = $this->model;
+        $result = $this->model->select('courses.*');
         if ($teacher) {
             $result = $result->join('teachers', 'teachers.id', '=', 'courses.teacher_id')
                 ->join('users', 'users.id', '=', 'teachers.user_id')

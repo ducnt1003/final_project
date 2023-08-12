@@ -63,6 +63,7 @@ class AuthService extends BaseService
         $user = Auth::user();
         return $this->sendResponse( [
             'user' => $user,
+            'student' => $user->student ? $user->student : null
         ], __('admin.message.success'));
     }
 

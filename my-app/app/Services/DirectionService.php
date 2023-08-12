@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Http\Resources\DirectionCollection;
+use App\Http\Resources\DirectionResource;
+use App\Models\Direction;
 use App\Models\DirectionRule;
 use App\Models\Expert;
 use App\Models\Student;
@@ -22,9 +25,26 @@ class DirectionService extends BaseService
         $this->directionRepo = $directionRepository;
     }
 
-    public function getList() {
-        $directions = $this->directionRepo->getList();
-        return $this->sendResponse($directions, __('admin.message.success'));
+    public function getList($request) {
+        $per_page = $request->itemsPerPage ? $request->itemsPerPage : 10;
+        $directions = $this->directionRepo->getList($per_page);
+        return $this->sendResponse(new DirectionCollection($directions), __('admin.message.success'));
+    }
+
+    public function getDetail($id) {
+
+        $direction = $this->directionRepo->find($id);
+        if (!$direction) {
+            return $this->sendError(null, __('admin.message.error'));
+        }
+        return $this->sendResponse(new DirectionResource($direction), __('admin.message.success'));
+    }
+
+    public function selected($request) {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+        $directions = Direction::join('student_direction', 'student_direction.direction_id', '=', 'directions.id')->where('student_direction.student_id', $student->id)->paginate(100);
+        return $this->sendResponse(new DirectionCollection($directions), __('admin.message.success'));
     }
 
     public function select($request) {
@@ -63,7 +83,6 @@ class DirectionService extends BaseService
             'description' => $request->description ?? '',
             'expert_id' => $expert->id
         ];
-
         try {
             $direction = $this->directionRepo->create($data);
             $rules = $request->rules ? json_decode('['.$request->rules.']', TRUE) : [];
@@ -94,6 +113,10 @@ class DirectionService extends BaseService
         try {
             $direction = $this->directionRepo->update($id, $data);
             $rules = $request->rules ? json_decode('['.$request->rules.']', TRUE) : [];
+            $rule_old = DirectionRule::where('course_id', $id)->get()->toArray();
+            $rules_old = array_map(function ($e) {
+                return $e['id'];
+            }, $rule_old);
             $data_rules = [];
             foreach ($rules as $rule) {
                 if (isset($rule['id'])) {
@@ -111,10 +134,11 @@ class DirectionService extends BaseService
                         'level' => $rule['level']
                     ];
                     $direction_rule = DirectionRule::create($data_rule);
-                    $data_rules[] = $direction_rule->id;
+                    // $data_rules[] = $direction_rule->id;
                 }
             }
-            DirectionRule::whereNotIn('id', $data_rules)->delete();
+            $rule_delete = array_diff($rules_old, $data_rules);
+            DirectionRule::whereIn('id', $rule_delete)->delete();
         } catch (Exception $e) {
             Log::error($e);
             return $this->sendError(null, __('admin.message.error'));

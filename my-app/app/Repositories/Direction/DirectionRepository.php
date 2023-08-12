@@ -15,9 +15,9 @@ class DirectionRepository extends AbstractRepository
         return Direction::class;
     }
 
-    public function getList() {
+    public function getList($per_page) {
         // if (!is_null($search))
             // return $this->model->where('name', 'LIKE', "%$search%")->get();
-        return $this->model->get();
+        return $this->model->paginate($per_page);
     }
 }

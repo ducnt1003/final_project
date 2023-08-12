@@ -37,17 +37,37 @@
                         </template>
                     </Field>
                 </slot>
-
             </CCol>
         </CRow>
         <CRow class="mb-3">
             <CCol sm="5" lg="4" xl="3"></CCol>
             <CCol sm="7" lg="8" xl="9">
-                <img v-if="image" :src="image" width="300"/>
-                <img v-if="image_url && !image" :src="image_url" width="300"/>
+                <img v-if="image" :src="image" width="300" />
+                <img v-if="image_url && !image" :src="image_url" width="300" />
+                <object
+                    v-if="type_url == 'pdf' && !object_type"
+                    :data="url"
+                    type="application/pdf"
+                    width="300"
+
+                ></object>
+
+                <video v-if="type_url == 'mp4' && !object_type" width="300" controls>
+                    <source :src="url" type="video/mp4" />
+                </video>
+                <object
+                    v-if="object_type == 'pdf'"
+                    :data="object"
+                    type="application/pdf"
+                    width="300"
+
+                ></object>
+
+                <video v-if="object_type == 'mp4'" width="300" controls>
+                    <source :src="object" type="video/mp4" />
+                </video>
             </CCol>
         </CRow>
-
     </div>
 </template>
 
@@ -138,6 +158,14 @@ export default {
             type: String,
             required: false,
         },
+        url: {
+            type: String,
+            required: false,
+        },
+        type_url: {
+            type: String,
+            required: false,
+        },
     },
     components: {
         Field,
@@ -146,11 +174,15 @@ export default {
         const attributes = ref({});
         const filledValue = ref(props.value);
         const image = ref();
+        const object = ref();
+        const object_type = ref();
 
         return {
             attributes,
             filledValue,
             image,
+            object,
+            object_type
         };
     },
     methods: {
@@ -189,7 +221,12 @@ export default {
                 const fileExtention = file.name.split(".").pop();
                 // Get file name
                 const fileName = file.name.split(".").shift();
-                this.image = URL.createObjectURL(file);
+                if (fileExtention == 'mp4' || fileExtention == 'pdf') {
+                    this.object = URL.createObjectURL(file);
+                    this.object_type = fileExtention
+                } else {
+                    this.image = URL.createObjectURL(file);
+                }
             }
         },
     },

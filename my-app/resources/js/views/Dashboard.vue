@@ -79,25 +79,25 @@ export default {
                     title: "Bài giảng",
                     pathName: "User",
                     icon: "fa-book",
-                    quantity: 46,
+                    quantity: 37,
                 },
                 {
                     title: "Đăng ký",
                     pathName: "User",
                     icon: "fa-person-chalkboard",
-                    quantity: 2037,
+                    quantity: 7086,
                 },
                 {
                     title: "Danh mục",
                     pathName: "User",
                     icon: "fa-archive",
-                    quantity: 16,
+                    quantity: 10,
                 },
                 {
                     title: "Học viên",
                     pathName: "User",
                     icon: "fa-user",
-                    quantity: 1417,
+                    quantity: 1447,
                 },
             ],
             data_courses: {
@@ -111,7 +111,7 @@ export default {
                 ],
                 datasets: [
                     {
-                        label: "Số người đăng ký",
+                        label: "Khóa học được đăng ký nhiều nhất",
                         backgroundColor: "#768db9",
                         data: [120, 104, 98, 87, 73, 62],
                     },

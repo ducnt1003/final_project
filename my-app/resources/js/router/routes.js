@@ -46,6 +46,15 @@ const routes = [
                         },
                     },
                     {
+                        path: ":courseId",
+                        name: "CourseDetail",
+                        component: () =>
+                            import("../views/course/CourseDetail.vue"),
+                        meta: {
+                            title: "Chi tiết khóa học",
+                        },
+                    },
+                    {
                         path: "create",
                         name: "CourseCreate",
                         component: () =>
@@ -64,7 +73,7 @@ const routes = [
                         },
                     },
                     {
-                        path: "upload/:partId",
+                        path: "upload/:courseId/:partId",
                         name: "CourseUpload",
                         component: () =>
                             import("../views/course/DocumentForm.vue"),
@@ -77,10 +86,41 @@ const routes = [
             {
                 path: "/categories",
                 name: "Category",
-                component: () => import("@/views/category/CategoryList.vue"),
+                component: {
+                    render() {
+                        return h(resolveComponent("router-view"));
+                    },
+                },
                 meta: {
                     title: "Danh mục",
                 },
+                redirect: { name: 'CategoryList'},
+                children: [
+                    {
+                        path: "",
+                        name: "CategoryList",
+                        component: () => import("@/views/category/CategoryList.vue"),
+                        meta: {
+                            title: "Danh sách danh mục",
+                        },
+                    },
+                    {
+                        path: "create",
+                        name: "CategoryCreate",
+                        component: () => import("@/views/category/CategoryForm.vue"),
+                        meta: {
+                            title: "Tạo danh mục",
+                        },
+                    },
+                    {
+                        path: ":categoryId/edit",
+                        name: "CategoryEdit",
+                        component: () => import("@/views/category/CategoryForm.vue"),
+                        meta: {
+                            title: "Chỉnh sửa danh mục",
+                        },
+                    },
+                ]
             },
             {
                 path: "/directions",
@@ -114,22 +154,63 @@ const routes = [
                             title: "Tạo định hướng",
                         },
                     },
+                    {
+                        path: "edit/:directionId",
+                        name: "DirectionEdit",
+                        component: () =>
+                            import("../views/direction/DirectionForm.vue"),
+                        meta: {
+                            title: "Chỉnh sửa định hướng",
+                        },
+                    },
+                    {
+                        path: ":directionId",
+                        name: "DirectionDetail",
+                        component: () =>
+                            import("../views/direction/DirectionDetail.vue"),
+                        meta: {
+                            title: "Chi tiết định hướng",
+                        },
+                    },
                 ]
             },
             {
                 path: "/users",
                 name: "User",
-                component: () => import("@/views/user/UserList.vue"),
+                component: {
+                    render() {
+                        return h(resolveComponent("router-view"));
+                    },
+                },
                 meta: {
                     title: "Người dùng",
                 },
+                redirect: { name: 'UserList'},
+                children: [
+                    {
+                        path: "",
+                        name: "UserList",
+                        component: () => import("@/views/user/UserList.vue"),
+                        meta: {
+                            title: "Danh sách người dùng",
+                        },
+                    },
+                    {
+                        path: "create",
+                        name: "UserCreate",
+                        component: () => import("@/views/user/UserForm.vue"),
+                        meta: {
+                            title: "Tạo người dùng",
+                        },
+                    },
+                ]
             },
             {
                 path: "/similar",
                 name: "Similar",
                 component: () => import("@/views/similar/SimilarList.vue"),
                 meta: {
-                    title: "Khóa học tương tự",
+                    title: "Khóa học gợi ý",
                 },
             },
         ],

@@ -15,12 +15,20 @@ class DirectionController extends Controller
         $this->directionService = $directionService;
     }
 
-    public function list() {
-        return $this->directionService->getList();
+    public function list(Request $request) {
+        return $this->directionService->getList($request);
+    }
+
+    public function getDetail($id) {
+        return $this->directionService->getDetail($id);
     }
 
     public function select(Request $request) {
         return $this->directionService->select($request);
+    }
+
+    public function selected(Request $request) {
+        return $this->directionService->selected($request);
     }
 
     public function create(Request $request) {

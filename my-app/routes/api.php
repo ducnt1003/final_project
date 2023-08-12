@@ -21,22 +21,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    // Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::post('/me', [AuthController::class, 'me']);
 });
 
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'list']);
     Route::post('/edit/{id}', [CategoryController::class, 'update']);
-    // Route::get('/{id}', [CategoryController::class, 'getDetail']);
+    Route::get('/{id}', [CategoryController::class, 'getDetail']);
     Route::post('/create', [CategoryController::class, 'store']);
     Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
 });
@@ -64,7 +60,7 @@ Route::prefix('enroll')->group(function () {
 
 Route::prefix('user')->group(function () {
     Route::get('/search-student', [UserController::class, 'searchStudent']);
-
+    Route::get('/', [UserController::class, 'list']);
     // Route::post('/edit/{id}', [CourseController::class, 'update']);
     // Route::get('/{id}', [CourseController::class, 'getDetail']);
     Route::post('/create', [UserController::class, 'store']);
@@ -74,6 +70,7 @@ Route::prefix('user')->group(function () {
 Route::prefix('recomend')->group(function () {
     Route::get('/get-data', [RecomendController::class, 'getData']);
     Route::post('/change-config', [RecomendController::class, 'changeConfig']);
+    Route::post('/get-config', [RecomendController::class, 'getConfig']);
 
     Route::get('/test', [RecomendController::class, 'test']);
     Route::get('/{id}', [RecomendController::class, 'recomend']);
@@ -83,8 +80,10 @@ Route::prefix('recomend')->group(function () {
 
 Route::prefix('direction')->middleware(['auth'])->group(function () {
     Route::get('/', [DirectionController::class, 'list']);
+    Route::get('/{id}', [DirectionController::class, 'getDetail']);
     Route::post('/select', [DirectionController::class, 'select']);
     Route::post('/create', [DirectionController::class, 'create']);
     Route::post('/edit/{id}', [DirectionController::class, 'update']);
+    Route::post('/selected', [DirectionController::class, 'selected']);
 });
 

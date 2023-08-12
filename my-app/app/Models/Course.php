@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -21,7 +22,7 @@ class Course extends Model
 
     public static function getLevel($level_id)
     {
-        $level_str = ['', 'Easy', 'Medium', 'Hard'];
+        $level_str = ['', 'Dễ', 'Cơ bản', 'Nâng cao'];
         return $level_str[$level_id];
     }
 
@@ -35,13 +36,13 @@ class Course extends Model
         return $this->belongsTo('App\Models\Category');
     }
 
-     public function num_enrolls()
-     {
-         return $this->hasMany('App\Models\Enroll', 'course_id', 'id');
-     }
+    public function enrolls()
+    {
+        return $this->hasMany('App\Models\Enroll', 'course_id', 'id');
+    }
 
-     public function parts()
-     {
+    public function parts()
+    {
         return $this->hasMany(CoursePart::class, 'course_id');
-     }
+    }
 }

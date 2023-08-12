@@ -24,4 +24,12 @@ class UserController extends Controller
     public function searchStudent(Request $request) {
         return $this->userService->searchStudent($request);
     }
+
+    public function list(Request $request) {
+        return $this->userService->list($request);
+    }
+
+    public function store(Request $request) {
+        return $this->userService->store($request);
+    }
 }

@@ -181,7 +181,7 @@ import * as yup from "yup";
 import VueApexCharts from "vue3-apexcharts";
 import json from "./similar.json";
 import { searchStudent } from "../../services/user";
-import { recomend, changeConfig } from "../../services/recomend";
+import { recomend, changeConfig, getConfig } from "../../services/recomend";
 
 export default {
     components: {
@@ -254,7 +254,7 @@ export default {
         async findSimilar() {
             try {
                 const response = await recomend(this.student);
-                this.items = response.data.slice(0, 5);
+                this.items = response.data;
                 this.items = this.items.map((e) => {
                     return {
                         id : e.id,
@@ -269,17 +269,6 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-            // var result = Object.keys(this.datas[this.course]).map((key) => [key-1, this.datas[this.course][key]]);
-            // let sort = result.sort((a,b) => b[1] - a[1] )
-            // let select = sort.slice(1,6);
-            // console.log(select)
-            // select.forEach((a, index) => {
-            //     this.items.push({
-            //         id: index+1,
-            //         class: this.courses[a[0]],
-            //         score: a[1]
-            //     })
-            // })
         },
         async changeConfig(result) {
             try {
@@ -291,64 +280,18 @@ export default {
                 console.error(error);
             }
         },
+        async getConfig() {
+            try {
+                const response = await getConfig();
+                this.config = response.value
+
+            } catch (error) {
+                console.error(error);
+            }
+        },
     },
-    created() {
-        this.courses = [
-            "Thiết kế giao diện người dùng",
-            "Kiểm thử và đảm bảo chất lượng phần mềm",
-            "Kiến trúc phần mềm",
-            "Phân tích và thiết kế hướng đối tượng",
-            "Quản lý dự án phần mềm",
-            "Giải tích",
-            "Tư duy toán học",
-            "Đại số tuyến tính",
-            "Lý thuyết trò chơi",
-            "Trí tuệ nhân tạo",
-            "Chương trình dịch",
-            "Xử lý ảnh",
-            "Xử lý ngôn ngữ tự nhiên",
-            "Nhập môn tiếng Nhật",
-            "Tiếng Anh giao tiếp",
-            "Lập trình mạng",
-            "Phát triển ứng dụng Web",
-            "An ninh mạng",
-            "Kinh tế tiền tệ và ngân hàng",
-            "Nguyên tắc kinh tế vi mô",
-            "Khái niệm cơ bản về giao dịch",
-            "Cơ sở kinh doanh",
-            "Thị trường tài chính",
-            "Giới thiệu về marketing",
-            "Marketing trong thế giới thực",
-            "Tiếp thị kỹ thuật số",
-            "Lịch sử Việt Nam cận đại",
-            "Chiến tranh thế giới thứ 1",
-            "Chiến tranh thế giới thứ 2",
-            "Văn hóa Việt Nam",
-            "Lịch sử Hà Nội",
-            "Dinh dưỡng cho trẻ",
-            "Tâm lý xã hội",
-            "Bệnh tiểu đường",
-            "Giới thiệu về kiến trúc",
-            "Nhạc truyền thống",
-            "Hội họa",
-        ];
-        this.courses.forEach((value, index) => {
-            var result = Object.keys(this.datas[index]).map((key) => [
-                key - 1,
-                this.datas[index][key],
-            ]);
-            let data_simi = [];
-            result.forEach((score, index1) => {
-                data_simi.push({
-                    x: this.courses[index1],
-                    y: score[1].toFixed(2),
-                });
-            });
-            this.series.push({
-                name: value,
-                data: data_simi,
-            });
-        });
+    async created() {
+        await this.getConfig()
         this.columns = [
             {
                 key: "id",

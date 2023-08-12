@@ -8,6 +8,13 @@ export function getCategories(params) {
   })
 }
 
+export function getCategory(id) {
+    return request({
+      url: '/category/' + id,
+      method: 'get',
+    })
+  }
+
 export function createCategory(data) {
     return request({
       url: '/category/create',

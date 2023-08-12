@@ -7,3 +7,11 @@ export function searchStudent(params) {
       params: params,
     });
 }
+
+export function getUsers(params) {
+    return request({
+      url: "/user",
+      method: "get",
+      params: params,
+    });
+}

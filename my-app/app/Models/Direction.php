@@ -21,4 +21,12 @@ class Direction extends Model
     public function Rule() {
         return $this->hasMany(DirectionRule::class, 'direction_id');
     }
+
+    public function Expert() {
+        return $this->belongsTo(Expert::class, 'expert_id');
+    }
+
+    public function student_directions() {
+        return $this->hasMany(StudentDirection::class, 'direction_id');
+    }
 }

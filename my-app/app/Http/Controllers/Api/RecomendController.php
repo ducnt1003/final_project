@@ -28,6 +28,11 @@ class RecomendController extends Controller
         return $this->recomendService->recomend($id);
     }
 
+    public function getConfig()
+    {
+        return $this->recomendService->getConfig();
+    }
+
     public function getData()
     {
         // return (1);

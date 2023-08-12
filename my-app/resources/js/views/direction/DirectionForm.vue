@@ -1,7 +1,7 @@
 <template>
     <ContentCard>
         <template #title>
-            {{ courseId ? "Chỉnh sửa định hướng" : "Tạo định hướng" }}
+            {{ directionId ? "Chỉnh sửa định hướng" : "Tạo định hướng" }}
         </template>
 
         <Form
@@ -54,7 +54,7 @@
                             label="Danh mục"
                             :selectOptions="categoryOptions"
                             :error="errors.category"
-                            :value="data?.category_id"
+                            :value="getPartInfo(index).category_id"
                             required
                         />
 
@@ -64,7 +64,7 @@
                             label="Độ khó"
                             :selectOptions="levelOptions"
                             :error="errors.level"
-                            :value="data?.level"
+                            :value="getPartInfo(index).level"
                             required
                         />
                     </CCardBody>
@@ -131,7 +131,7 @@ import { useRoute } from "vue-router";
 import { ref } from "@vue/reactivity";
 import * as yup from "yup";
 import { getCategories } from "@/services/category";
-import { createCourse, getCourseDetail } from "@/services/course";
+import { createDirection, getDirectionDetail, editDirection } from "@/services/direction";
 import * as levels from "@/configs/course/level";
 import { useToast } from "vue-toastification";
 
@@ -142,7 +142,7 @@ export default {
         Form,
     },
     setup() {
-        const courseId = useRoute().params.courseId;
+        const directionId = useRoute().params.directionId;
         const categoryOptions = ref([]);
         const levelOptions = Object.values(levels)
             .sort((a, b) => a.id - b.id)
@@ -157,7 +157,7 @@ export default {
         const toast = useToast();
 
         return {
-            courseId,
+            directionId,
             categoryOptions,
             levelOptions,
             isLoading,
@@ -173,13 +173,13 @@ export default {
         },
     },
     methods: {
-        async getCourseInfo() {
+        async getDirectionInfo() {
             this.isLoading = true;
             try {
-                const response = await getCourseDetail(this.courseId);
+                const response = await getDirectionDetail(this.directionId);
                 if (response) {
                     this.data = response.data;
-                    this.parts = this.data.parts;
+                    this.parts = this.data.rules;
                     console.log(response);
                 }
             } finally {
@@ -189,9 +189,9 @@ export default {
         async handleGetData() {
             this.isLoading = true;
             try {
-                const response = await getCategories();
+                const response = await getCategories({itemsPerPage: 100});
                 if (response) {
-                    this.categoryOptions = response.data.map((e) => {
+                    this.categoryOptions = response.data.data.map((e) => {
                         return {
                             value: e.id,
                             name: e.name,
@@ -204,38 +204,41 @@ export default {
         },
         async handleSubmit(result) {
             this.isSubmiting = true;
-            // try {
-            //     let formData = new FormData();
-            //     formData.append("name", result.name);
-            //     formData.append("category", result.category);
-            //     formData.append("level", result.level);
-            //     formData.append("price", result.price);
-            //     formData.append("teacher_id", 2);
-            //     formData.append("description", result.description ?? null);
-            //     formData.append("photo", result.image ?? null);
-            //     formData.append(
-            //         "parts",
-            //         result.parts.map((e) => {
-            //             return JSON.stringify(e);
-            //         }) ?? null
-            //     );
+            try {
+                let formData = new FormData();
+                formData.append("name", result.name);
+                formData.append("description", result.description ?? null);
+                formData.append("photo", result.image ?? null);
+                formData.append(
+                    "rules",
+                    result.parts.map((e) => {
+                        return JSON.stringify(e);
+                    }) ?? null
+                );
+                console.log(formData);
+                if (!this.directionId) {
+                    const response = await createDirection(formData);
+                    if (response) {
+                        console.log(response);
+                        this.$router.push({
+                            name: "DirectionList",
+                        });
+                        this.toast.success("Tạo định hướng mới thành công");
+                    }
+                } else {
+                    const response = await editDirection(formData);
+                    if (response) {
+                        console.log(response);
+                        this.$router.push({
+                            name: "DirectionList",
+                        });
+                        this.toast.success("Chỉnh sửa định hướng mới thành công");
+                    }
+                }
+            } finally {
+                this.isSubmiting = false;
+            }
 
-            //     if (!this.courseId) {
-            //         const response = await createCourse(formData);
-            //         if (response) {
-            //             console.log(response);
-            //             this.toast.success("Tạo khóa học mới thành công");
-            //         }
-            //     } else {
-            //     }
-            // } finally {
-            //     this.isSubmiting = false;
-            // }
-            this.$router.push({
-              name: "DirectionList",
-
-            });
-            this.toast.success("Tạo khóa học mới thành công");
         },
         addPart() {
             this.parts.push({
@@ -252,8 +255,8 @@ export default {
     },
     async created() {
         await this.handleGetData();
-        if (this.courseId) {
-            await this.getCourseInfo(this.courseId);
+        if (this.directionId) {
+            await this.getDirectionInfo(this.directionId);
         }
     },
 };
